@@ -1,0 +1,26 @@
+{
+    "name": "base-twilio-mongo",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "pre-copy": "cd .. && npm run  copy.lib base-twilio-mongo",
+        "start": "node app.js"
+    },
+    "keywords": [],
+    "dependencies": {
+        "@bot-whatsapp/bot": "latest",
+        "@bot-whatsapp/cli": "latest",
+        "@bot-whatsapp/database": "latest",
+        "@bot-whatsapp/provider": "latest",
+        "body-parser": "^1.20.1",
+        "dotenv": "^16.3.1",
+        "mime-types": "^2.1.35",
+        "mongodb": "^4.12.1",
+        "node-fetch": "^3.3.2",
+        "polka": "^0.5.2",
+        "twilio": "3.84.1"
+    },
+    "author": "",
+    "license": "ISC"
+}
