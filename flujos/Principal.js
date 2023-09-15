@@ -1,5 +1,6 @@
 const { addKeyword } = require('@bot-whatsapp/bot')
 const { postData } = require('../utils/getPolizaPDF.js')
+const { EVENTS } = require('@bot-whatsapp/bot')
 const { FlowValidatePage } = require('twilio/lib/rest/studio/v2/flowValidate.js')
 
 const usuarios = ["Juan"]
@@ -100,19 +101,21 @@ const flowCotizar = addKeyword(['cotizar','cot']).addAnswer(
 )
 
 
+
 const flowMenuOtros = addKeyword(['otros','Ver otras opciones']).addAnswer(
     ['Tambien puedes dar de alta a *Siniestros* y revisar tus *Facturas*.'],
     {
         capture:true
     },
-    async (ctx, {flowDynamic} ) =>{
-        if (ctx.body == 'Siniestros'){
-            console.log("Siniestros");
+    async (ctx,{gotoFlow}) =>{
+        console.log("Menu otros", ctx.from);
+        if(ctx.body == 'Menu anterior'){
+            return gotoFlow(flowMenu);
         }
     },
     [flowSiniestros,flowFacturas]
 )
-const flowMenu = addKeyword(['menu','Menu']).addAnswer(
+const flowMenu = addKeyword(['menu', 'Menu']).addAnswer(
     '¿Cómo podemos ayudarte hoy? Selecciona una de las siguientes opciones.',
     {
         capture:true,
@@ -120,6 +123,51 @@ const flowMenu = addKeyword(['menu','Menu']).addAnswer(
     [flowPolizas,flowPagar,flowFacturas,flowSiniestros,flowMenuOtros]
 )
 
+const flowtemp = addKeyword(['temp']).addAction(
+    async (ctx, {gotoFlow} ) =>{
+        console.log("Pasa por flujo temporal", ctx.from);
+        return gotoFlow(flowNoRegistrado);
+    }
+)
+
+const flowAsignarEjecutivo = addKeyword(['ejecutivo', 'Allende', 'Galeana',' General Teran', 'Linares', 'Montemorelos', 'Victoria'])
+.addAction(
+    async (ctx, {flowDynamic} ) =>{
+        console.log("sucursal seleccionada:", ctx.body)
+        return flowDynamic(`hola ${ctx.body}`)
+        //return await flowDynamic({body:`📍 ${ctx.body}, Nuevo León\n📞 81 8880 6631\n📧`})
+    }
+)
+const flowNoRegistrado = addKeyword(['no registrado','no','No']).addAnswer(
+    ['*Con gusto le asesoramos, selecciona tu sucursal de preferencia:*'
+],
+    {capture:true},
+    null,
+    [flowAsignarEjecutivo]
+)
+    
+
+    /*
+).addAnswer(
+    '*Con gusto le asesoramos, selecciona tu sucursal de preferencia:*',
+    {capture:true},
+    async (ctx ) =>{
+        console.log('sucursal seleccionada:', );
+    }
+).addAnswer(
+    '*Tambien ofincinas en:*',null,
+    async (ctx, {flowDynamic} ) =>{
+        console.log('sucursal seleccionada:', ctx.body);
+        if (ctx.body == 'Monterrey'){
+            return flowDynamic({body : '📍 Monterrey, Nuevo León\n📞 81 8880 6631\n📧'})
+        }
+    }
+).addAnswer(
+    'cargando...',
+    {capture:true}
+).addAnswer(
+    'Puedes ponerte en contacto con nuestros ejecutivos para obtener más información sobre nuestros productos y servicios. 😊',
+)*/
 
 const flowDespedida = addKeyword(['adios', 'Gracias', 'Thx','hasta luego', 'bye'])
     .addAnswer('🙌 Gracias por utilizar el servicio de *Chatbot de AWY*').addAction( ()=>{
@@ -128,29 +176,28 @@ const flowDespedida = addKeyword(['adios', 'Gracias', 'Thx','hasta luego', 'bye'
 
 
 
-const flowInicio = addKeyword(['hola', 'ole', 'alo','Buenos días','menu','inicio'])
+const flowInicio = addKeyword(EVENTS.WELCOME)
 .addAnswer(
     'Bienvenido al ChatBot de AWY🤖 ¿Quieres iniciar una conversación?',
     {
         capture:true,
     },
-    async (ctx, {flowDynamic,endFlow} ) =>{
-
+    async (ctx, {flowDynamic,endFlow,state} ) =>{
         //aqui se hace una petición a la api para saber si el cliente es un usuario registrado en la base de datos de awy
         try {
-            const usuario = await postData(1,"8118806639");
+            const usuario = await postData(1,"8118806630");
             if(usuario.ok){
                 console.log("El usuario es un cliente registrado ", ctx.from);
 
                 if (ctx.body == 'Iniciar conversación'){
                     console.log("Se inicia la conversación");
+                    state.update({ usuarioExiste: true });
                     return flowDynamic(
                         {
                             body: `Hola, ${ctx.from}`,
                         }
                     )
                 }
-
                 if (ctx.body == 'Cancelar'){
                     console.log("Se cancela la conversación");
                     return endFlow(
@@ -164,34 +211,33 @@ const flowInicio = addKeyword(['hola', 'ole', 'alo','Buenos días','menu','inici
         } catch (error) {
             console.error('Error al obtener el usuario:', error.message);
             console.log("El usuario no es un cliente registrado en la base de datos de awy");
-                return flowDynamic(
-                    [
-                        {
-                            body: 'Parece que no eres un cliente registrado en la base de datos de AWY 😔'
-                        },
-                        {
-                            body: 'Puedes ponerte en contacto con nuestros ejecutivos para obtener más información sobre nuestros productos y servicios. 😊'
-                        }
-                    ]
-                )
+            state.update({ usuarioExiste: false });
         }
         
     },
     [flowPolizas,flowPagar,flowSiniestros,flowMenuOtros,flowMenu]
-)/*.addAnswer(
-    '¿Cómo podemos ayudarte hoy? Selecciona una de las siguientes opciones.',
-    {
-        capture:true,
-    },null,
-    [flowPolizas,flowPagar,flowSiniestros,flowMenuOtros]
-)*/
+).addAction(
+    async (ctx, {state,gotoFlow} ) =>{
+        const myState = state.getMyState()
+        if(myState.usuarioExiste){
+            console.log("Mostrando Menu principal a ", ctx.from);
+            return gotoFlow(flowMenu);
+        }else{
+            console.log("Mostrando Menu de no registrado a ", ctx.from);
+            return gotoFlow(flowNoRegistrado);
+        }
+    }
+)
 
 
     module.exports = {
         flowInicio,
         flowMenu,
+        flowtemp,
         flowMenuOtros,
         flowDespedida,
+        flowNoRegistrado,
+        flowAsignarEjecutivo,
         flowCotizar,
         flowPolizas,
         flowPagar,
