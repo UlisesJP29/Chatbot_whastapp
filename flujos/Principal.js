@@ -130,46 +130,82 @@ const flowtemp = addKeyword(['temp']).addAction(
     }
 )
 
-const flowAsignarEjecutivo = addKeyword(['ejecutivo', 'Allende', 'Galeana',' General Teran', 'Linares', 'Montemorelos', 'Victoria'])
+const flowAsignarEjecutivo = addKeyword(['ejecutivo', 'Allende', 'Galeana','General Terán', 'Linares', 'Montemorelos', 'Victoria'])
 .addAction(
     async (ctx, {flowDynamic} ) =>{
         console.log("sucursal seleccionada:", ctx.body)
-        return flowDynamic(`hola ${ctx.body}`)
-        //return await flowDynamic({body:`📍 ${ctx.body}, Nuevo León\n📞 81 8880 6631\n📧`})
+        return flowDynamic(`📍 ${ctx.body}, Nuevo León\n📞 81 8880 6631\n📧}`)
     }
 )
-const flowNoRegistrado = addKeyword(['no registrado','no','No']).addAnswer(
-    ['*Con gusto le asesoramos, selecciona tu sucursal de preferencia:*'
-],
-    {capture:true},
-    null,
-    [flowAsignarEjecutivo]
-)
-    
 
-    /*
+const flowNoRegistrado = addKeyword(['no registrado'],{ sensitive: true }).addAnswer(
+    [
+        'Nos emociona que hayas llegado a nuestro servicio. 😃 \n \nPara comenzar, por favor proporciona tu información básica para poder ayudarte de la mejor manera posible.',
+        '\n¡Gracias por confiar en nosotros! \n \n¡Comencemos! 📋🔒'
+    ]
 ).addAnswer(
-    '*Con gusto le asesoramos, selecciona tu sucursal de preferencia:*',
+    '¿Cuál es tu nombre completo?',
     {capture:true},
-    async (ctx ) =>{
-        console.log('sucursal seleccionada:', );
+    async (ctx, {state} ) =>{
+        state.update({ NombreCliente: ctx.body });
     }
 ).addAnswer(
-    '*Tambien ofincinas en:*',null,
-    async (ctx, {flowDynamic} ) =>{
-        console.log('sucursal seleccionada:', ctx.body);
-        if (ctx.body == 'Monterrey'){
-            return flowDynamic({body : '📍 Monterrey, Nuevo León\n📞 81 8880 6631\n📧'})
+    [
+            'Selecciona tu sucursal de preferencia:\n',
+        '✅ *Allende*\n',
+        '✅ *Galeana*\n',
+        '✅ *General Terán*\n',
+        '✅ *Linares*\n',
+        '✅ *Montemorelos*\n'
+    ],
+    {capture:true},
+    async (ctx, {state,fallBack} ) =>{
+        console.log("sucursal seleccionada:", ctx.body)
+        if (ctx.body == 'Allende' || ctx.body == 'Galeana' || ctx.body == 'General Terán' || ctx.body == 'Linares' || ctx.body == 'Montemorelos'){
+            state.update({ SucursalCliente: ctx.body });
+            console.log("Se actualizo el estado del cliente con la sucursal seleccionada", ctx.body);
+        }else{
+            return fallBack()
         }
     }
 ).addAnswer(
-    'cargando...',
-    {capture:true}
-).addAnswer(
-    'Puedes ponerte en contacto con nuestros ejecutivos para obtener más información sobre nuestros productos y servicios. 😊',
-)*/
+    [
+        'Ahora te podrás comunicar con un ejecutivo de la sucursal seleccionada.\n',
+        'Selecciona algun ejecutivo de la lista:\n',
+        //dame una lista en strings de 10 nombres de ejecutivos de la sucursal seleccionada,como una lista en javascript
+        '✔ Juan\n',
+        '✔ Pedro\n', 
+        '✔ Jorge Luis\n',
+        '✔ Alfredo\n',
+        '✔ Roberto Carlos\n',
+        '✔ Ana Maria\n'
+    ],
+    {capture:true},
+    async (ctx, {flowDynamic,state,fallback} ) =>{
+        const cliente = state.getMyState()
 
-const flowDespedida = addKeyword(['adios', 'Gracias', 'Thx','hasta luego', 'bye'])
+        console.log("Ejecutivo seleccionado:", ctx.body);
+        return flowDynamic([
+            {body: `📍 ${cliente.SucursalCliente}, Nuevo León\n *Llamar* 📞 932 111 4495`},
+            {body: `*${cliente.NombreCliente}*, ahora podras comunicarte con tu ejecutivo *${ctx.body}*.\n \nEl esta disponible para ayudarte con cualquier duda que tengas. 😊`}
+        ]);
+    }
+).addAnswer('De parte de AWY, ¡muchas gracias por confiar en nosotros! 😊\n\n¡Esperamos verte pronto!',
+{
+    delay: 5000
+},(ctx, {endFlow}) => {
+        return endFlow(
+            {
+                
+                body: '¡Saliste del Chat. 😔 Para volver a iniciar, simplemente escribe *Hola* o *Inicio*. Estamos aquí para ayudarte. 🙌🤖'
+            }
+        )
+    
+    
+}
+)
+
+const flowDespedida = addKeyword(['adios', 'Gracias', 'Thx','hasta luego', 'bye','finalizar chat'])
     .addAnswer('🙌 Gracias por utilizar el servicio de *Chatbot de AWY*').addAction( ()=>{
         console.log(" ****** Finalizar conversación ******")
 })
@@ -182,8 +218,16 @@ const flowInicio = addKeyword(EVENTS.WELCOME)
     {
         capture:true,
     },
-    async (ctx, {flowDynamic,endFlow,state} ) =>{
+    async (ctx, {flowDynamic,endFlow,state,gotoFlow} ) =>{
         //aqui se hace una petición a la api para saber si el cliente es un usuario registrado en la base de datos de awy
+        if (ctx.body == 'Cancelar'){
+            console.log("Se cancela la conversación");
+            return endFlow(
+                {
+                    body: ['❌ Su solicitud ha sido cancelada ❌ \nSi quieres volver a iniciar una conversación escribe *hola*']
+                }
+            )
+        }
         try {
             const usuario = await postData(1,"8118806630");
             if(usuario.ok){
@@ -198,14 +242,7 @@ const flowInicio = addKeyword(EVENTS.WELCOME)
                         }
                     )
                 }
-                if (ctx.body == 'Cancelar'){
-                    console.log("Se cancela la conversación");
-                    return endFlow(
-                        {
-                            body: ['❌ Su solicitud ha sido cancelada ❌ \nSi quieres volver a iniciar una conversación escribe *hola*']
-                        }
-                    )
-                }
+                
             }
             
         } catch (error) {
@@ -213,11 +250,7 @@ const flowInicio = addKeyword(EVENTS.WELCOME)
             console.log("El usuario no es un cliente registrado en la base de datos de awy");
             state.update({ usuarioExiste: false });
         }
-        
-    },
-    [flowPolizas,flowPagar,flowSiniestros,flowMenuOtros,flowMenu]
-).addAction(
-    async (ctx, {state,gotoFlow} ) =>{
+
         const myState = state.getMyState()
         if(myState.usuarioExiste){
             console.log("Mostrando Menu principal a ", ctx.from);
@@ -226,6 +259,7 @@ const flowInicio = addKeyword(EVENTS.WELCOME)
             console.log("Mostrando Menu de no registrado a ", ctx.from);
             return gotoFlow(flowNoRegistrado);
         }
+        
     }
 )
 
