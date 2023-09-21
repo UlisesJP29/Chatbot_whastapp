@@ -196,7 +196,7 @@ const flowNoRegistrado = addKeyword(['no registrado'],{ sensitive: true }).addAn
 },(ctx, {endFlow}) => {
         return endFlow(
             {
-                
+
                 body: '¡Saliste del Chat. 😔 Para volver a iniciar, simplemente escribe *Hola* o *Inicio*. Estamos aquí para ayudarte. 🙌🤖'
             }
         )
@@ -229,13 +229,14 @@ const flowInicio = addKeyword(EVENTS.WELCOME)
             )
         }
         try {
-            const usuario = await postData(1,"8118806630");
+            const usuario = await postData(1,"8118806631");
             if(usuario.ok){
                 console.log("El usuario es un cliente registrado ", ctx.from);
 
                 if (ctx.body == 'Iniciar conversación'){
                     console.log("Se inicia la conversación");
                     state.update({ usuarioExiste: true });
+                    //return gotoFlow(flowMenu)
                     return flowDynamic(
                         {
                             body: `Hola, ${ctx.from}`,
@@ -260,6 +261,11 @@ const flowInicio = addKeyword(EVENTS.WELCOME)
             return gotoFlow(flowNoRegistrado);
         }
         
+    }
+).addAction(
+    async (ctx, {gotoFlow} ) =>{
+        console.log("Pasa al menu principal", ctx.from);
+        return gotoFlow(flowMenu);
     }
 )
 

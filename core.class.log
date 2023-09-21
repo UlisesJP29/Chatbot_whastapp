@@ -1,0 +1,560 @@
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'hola' }
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'hola' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_369cff34-da44-4c00-b67f-e6d7884ffd66',
+  keyword: 'key_6b38eaf8-4b0c-4019-9de8-76ec855208c6',
+  answer: 'Bienvenido al ChatBot de AWY🤖 ¿Quieres iniciar una conversación?',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'da57c91916faf0bcff35156233c4930c'
+}
+[handleMsg]:  {
+  from: '5219321114495',
+  to: '5218261354156',
+  body: 'Iniciar conversación'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_0bdc098c-4af5-467d-b7d1-4b894297c6bb',
+  keyword: 'ans_369cff34-da44-4c00-b67f-e6d7884ffd66',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '7b6525b7a5a5866c94f50621a453f93a'
+}
+[handleMsg]:  {
+  from: '5219321114495',
+  to: '5218261354156',
+  body: 'Ver otras opciones'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_ac68105d-0cf1-4129-96a2-a92edf9810e1',
+  keyword: 'key_d73f38df-f6c8-4678-8ea9-b42c1929d5ff',
+  answer: 'Tambien puedes dar de alta a *Siniestros* y revisar tus *Facturas*.',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [ [Object], [Object], [Object], [Object] ],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'bb11d5a95096bf3f3d1f8d9f10aa150b'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'Menu anterior' }
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'Pólizas' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_acd00c42-e9a3-4877-af16-185c301ef259',
+  keyword: 'key_0c3a0f1c-0984-4be3-9b76-221e26728b83',
+  answer: '👋 Soy el asistente virtual de AWY Seguros. ¡Tengo una excelente noticia para ti! 😃 Ahora puedes acceder a tus pólizas de una manera más fácil y rápida a través de nuestro servicio en línea. 🚀📈',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: 'ec6bcd3cd8bce93e582d1b156d7d4817'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_fa3351cd-c5ba-4f62-82b3-ae47579b365a',
+  keyword: 'ans_acd00c42-e9a3-4877-af16-185c301ef259',
+  answer: '¡Estamos aquí para hacer tu vida más sencilla! 😄🤖',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '1e11a474c3c5e8466343cc7b9fc0189c'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_ea3539ae-7abe-4c21-b923-b5694373c326',
+  keyword: 'ans_fa3351cd-c5ba-4f62-82b3-ae47579b365a',
+  answer: '📄 Aquí te muestro las pólizas que tienes disponibles: ',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '9236b990450ccfa0fe41242ef8a53b54'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_187591c1-9ad9-4af4-b8f0-75464ca19122',
+  keyword: 'ans_ea3539ae-7abe-4c21-b923-b5694373c326',
+  answer: '¿Quieres regresar al menu de opciones?',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 5000,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'fb59b02865d061bd00e476d5bfb1894d'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'Menu' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_365c9933-4812-48e1-87b0-a43b1bd224b3',
+  keyword: 'key_b709722a-1775-4880-b2b7-28899a65f516',
+  answer: '¿Cómo podemos ayudarte hoy? Selecciona una de las siguientes opciones.',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object]
+    ],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: 'c6de44933cbb8c6378b461c155ad6aa7'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'Pagar' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_52ecd171-aa0b-42a0-bf99-2ee6b7ddb6bb',
+  keyword: 'key_789ab8a0-9115-4f22-8e44-ff5ba3dc7ed1',
+  answer: '¡Hola! Soy el asistente virtual de AWY. Estoy aquí para ayudarte con tus pagos y cualquier otra consulta que tengas. 😊',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: 'a985c99f6ae87a8300eaec95efb4f70f'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_f30d1031-e56f-4adb-a4d2-72ea030d961e',
+  keyword: 'ans_52ecd171-aa0b-42a0-bf99-2ee6b7ddb6bb',
+  answer: '¡Buenas noticias! Ahora puedes pagar de diferentes maneras en nuestra sucursal:\n' +
+    'Recuerda que siempre estamos aquí para ayudarte en todo lo que necesites. Si tienes alguna duda o requieres asistencia, solo escríbeme. ¡Estoy listo para ayudarte las 24 horas, los 7 días de la semana!',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '82cb16e8d49e7caf63462875e12f196b'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_1abafc27-e046-4850-8683-59487ca38d5c',
+  keyword: 'ans_f30d1031-e56f-4adb-a4d2-72ea030d961e',
+  answer: '💳 Pago con tarjeta: Aceptamos tarjetas de crédito y débito Visa, Mastercard, y más. Solo acércate a la caja y podrás pagar de forma rápida y segura.',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: 'b88e82ef1b2159825dfab6327296c53b'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_b12709db-3397-4c0e-aeed-588e48c2127e',
+  keyword: 'ans_1abafc27-e046-4850-8683-59487ca38d5c',
+  answer: '📲 Pago por transferencia: Si prefieres hacer tus pagos desde la comodidad de tu aplicación bancaria, solo necesitas nuestros datos bancarios. ¡Es fácil y seguro!',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: 'a853ff2950342c8782b45f32e7a09038'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_9747d035-ea52-4f97-a5a6-3e4558dd4072',
+  keyword: 'ans_b12709db-3397-4c0e-aeed-588e48c2127e',
+  answer: '🏦 Pago en OXXO: Si te gusta pagar en efectivo, proporciona al cajero la referencia que se encuentra en tu póliza o documento de pago. indica el monto a pagar correspondiente a tu compra o servicio y listo! recibirás un comprobante de pago que confirma la transacción.',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: 'e0cbb440031ef60cd1042f53ea123074'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_96031e50-518a-43cd-b74c-72a55e802c93',
+  keyword: 'ans_9747d035-ea52-4f97-a5a6-3e4558dd4072',
+  answer: '¡Gracias por confiar en AWY Agente de Seguros! Esperamos verte pronto en nuestra sucursal. 😊🏢\n' +
+    'Visita nuetra pagina web https://awy.com.mx/',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '7c25014f9a13ff36e01dd1c86d34a320'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_cf39e071-6540-4952-bc05-928b515b47f3',
+  keyword: 'ans_96031e50-518a-43cd-b74c-72a55e802c93',
+  answer: '¿Quieres regresar al menu de opciones?',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'f51886b25a915a3026892b61b04552be'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'Menu' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_365c9933-4812-48e1-87b0-a43b1bd224b3',
+  keyword: 'key_b709722a-1775-4880-b2b7-28899a65f516',
+  answer: '¿Cómo podemos ayudarte hoy? Selecciona una de las siguientes opciones.',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object]
+    ],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: 'c6de44933cbb8c6378b461c155ad6aa7'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'Pagar' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_52ecd171-aa0b-42a0-bf99-2ee6b7ddb6bb',
+  keyword: 'key_789ab8a0-9115-4f22-8e44-ff5ba3dc7ed1',
+  answer: '¡Hola! Soy el asistente virtual de AWY. Estoy aquí para ayudarte con tus pagos y cualquier otra consulta que tengas. 😊',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: 'a985c99f6ae87a8300eaec95efb4f70f'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_f30d1031-e56f-4adb-a4d2-72ea030d961e',
+  keyword: 'ans_52ecd171-aa0b-42a0-bf99-2ee6b7ddb6bb',
+  answer: '¡Buenas noticias! Ahora puedes pagar de diferentes maneras en nuestra sucursal:\n' +
+    'Recuerda que siempre estamos aquí para ayudarte en todo lo que necesites. Si tienes alguna duda o requieres asistencia, solo escríbeme. ¡Estoy listo para ayudarte las 24 horas, los 7 días de la semana!',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '82cb16e8d49e7caf63462875e12f196b'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_1abafc27-e046-4850-8683-59487ca38d5c',
+  keyword: 'ans_f30d1031-e56f-4adb-a4d2-72ea030d961e',
+  answer: '💳 Pago con tarjeta: Aceptamos tarjetas de crédito y débito Visa, Mastercard, y más. Solo acércate a la caja y podrás pagar de forma rápida y segura.',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: 'b88e82ef1b2159825dfab6327296c53b'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_b12709db-3397-4c0e-aeed-588e48c2127e',
+  keyword: 'ans_1abafc27-e046-4850-8683-59487ca38d5c',
+  answer: '📲 Pago por transferencia: Si prefieres hacer tus pagos desde la comodidad de tu aplicación bancaria, solo necesitas nuestros datos bancarios. ¡Es fácil y seguro!',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: 'a853ff2950342c8782b45f32e7a09038'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_9747d035-ea52-4f97-a5a6-3e4558dd4072',
+  keyword: 'ans_b12709db-3397-4c0e-aeed-588e48c2127e',
+  answer: '🏦 Pago en OXXO: Si te gusta pagar en efectivo, proporciona al cajero la referencia que se encuentra en tu póliza o documento de pago. indica el monto a pagar correspondiente a tu compra o servicio y listo! recibirás un comprobante de pago que confirma la transacción.',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: 'e0cbb440031ef60cd1042f53ea123074'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_96031e50-518a-43cd-b74c-72a55e802c93',
+  keyword: 'ans_9747d035-ea52-4f97-a5a6-3e4558dd4072',
+  answer: '¡Gracias por confiar en AWY Agente de Seguros! Esperamos verte pronto en nuestra sucursal. 😊🏢\n' +
+    'Visita nuetra pagina web https://awy.com.mx/',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '7c25014f9a13ff36e01dd1c86d34a320'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_cf39e071-6540-4952-bc05-928b515b47f3',
+  keyword: 'ans_96031e50-518a-43cd-b74c-72a55e802c93',
+  answer: '¿Quieres regresar al menu de opciones?',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'f51886b25a915a3026892b61b04552be'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'Finalizar chat' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_ffdec0b6-c87d-425c-92c1-09688faf000f',
+  keyword: 'key_d00976db-3604-4ce2-aa5c-d764060943cb',
+  answer: '🙌 Gracias por utilizar el servicio de *Chatbot de AWY*',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: 'f4b49024831d68cb8ac22487d097e5b0'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_02e654c0-b4a5-4c43-98fc-7f5265d3f939',
+  keyword: 'ans_ffdec0b6-c87d-425c-92c1-09688faf000f',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '7198dfbb8e9d0f8ab3fa633fee32961c'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'hola' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_369cff34-da44-4c00-b67f-e6d7884ffd66',
+  keyword: 'key_6b38eaf8-4b0c-4019-9de8-76ec855208c6',
+  answer: 'Bienvenido al ChatBot de AWY🤖 ¿Quieres iniciar una conversación?',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'da57c91916faf0bcff35156233c4930c'
+}
+[handleMsg]:  {
+  from: '5219321114495',
+  to: '5218261354156',
+  body: 'Iniciar conversación'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_0bdc098c-4af5-467d-b7d1-4b894297c6bb',
+  keyword: 'ans_369cff34-da44-4c00-b67f-e6d7884ffd66',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '7b6525b7a5a5866c94f50621a453f93a'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'Pólizas' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_acd00c42-e9a3-4877-af16-185c301ef259',
+  keyword: 'key_0c3a0f1c-0984-4be3-9b76-221e26728b83',
+  answer: '👋 Soy el asistente virtual de AWY Seguros. ¡Tengo una excelente noticia para ti! 😃 Ahora puedes acceder a tus pólizas de una manera más fácil y rápida a través de nuestro servicio en línea. 🚀📈',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: 'ec6bcd3cd8bce93e582d1b156d7d4817'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_fa3351cd-c5ba-4f62-82b3-ae47579b365a',
+  keyword: 'ans_acd00c42-e9a3-4877-af16-185c301ef259',
+  answer: '¡Estamos aquí para hacer tu vida más sencilla! 😄🤖',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '1e11a474c3c5e8466343cc7b9fc0189c'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_ea3539ae-7abe-4c21-b923-b5694373c326',
+  keyword: 'ans_fa3351cd-c5ba-4f62-82b3-ae47579b365a',
+  answer: '📄 Aquí te muestro las pólizas que tienes disponibles: ',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '9236b990450ccfa0fe41242ef8a53b54'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_187591c1-9ad9-4af4-b8f0-75464ca19122',
+  keyword: 'ans_ea3539ae-7abe-4c21-b923-b5694373c326',
+  answer: '¿Quieres regresar al menu de opciones?',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 5000,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'fb59b02865d061bd00e476d5bfb1894d'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'Finalizar chat' }
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'inicio' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_369cff34-da44-4c00-b67f-e6d7884ffd66',
+  keyword: 'key_6b38eaf8-4b0c-4019-9de8-76ec855208c6',
+  answer: 'Bienvenido al ChatBot de AWY🤖 ¿Quieres iniciar una conversación?',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'da57c91916faf0bcff35156233c4930c'
+}
