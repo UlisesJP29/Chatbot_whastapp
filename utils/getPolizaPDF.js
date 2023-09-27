@@ -33,7 +33,7 @@ async function postData(type,telephone) {
 
         const responseData = await response.json();
         
-            // Aquí puedes manejar la respuesta JSON recibida
+            // Se maneja la respuesta JSON recibida
         console.log('Respuesta del servidor:', responseData);
         return responseData;
         
@@ -41,7 +41,6 @@ async function postData(type,telephone) {
             console.error('Error al hacer la solicitud:', error.message);
     }
 }
-
 
 
 

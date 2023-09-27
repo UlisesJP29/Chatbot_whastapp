@@ -1,17 +1,21 @@
 const { addKeyword } = require('@bot-whatsapp/bot')
 const { postData } = require('../utils/getPolizaPDF.js')
+const { getUserInfo } = require('../utils/Buscarusuario.js')
 const { EVENTS } = require('@bot-whatsapp/bot')
 const { FlowValidatePage } = require('twilio/lib/rest/studio/v2/flowValidate.js')
 
-const usuarios = ["Juan"]
 
 const flowCotizarAutos = addKeyword(['1', 'autos','auto', 'carro']).addAnswer(['📄 Aquí podrás cotizar autos', 'Entra a https://awy.com.mx/'])
 
 const flowSiniestros = addKeyword(['siniestros', 'siniestro'])
-.addAnswer(['📄 ¿Qué tipo de siniestro quieres levantar?'],
-    {
-        media : 'https://awy-network.s3.amazonaws.com/64cd5f9197d9bc001419599c-policy'
-    }
+.addAnswer(['📄 ¿Qué tipo de siniestro quieres levantar?']
+).addAnswer('¿Quieres regresar al menu de opciones?',
+{
+    capture:true
+},(ctx, {endFlow}) => {
+    console.log("regreso al menu de opciones");
+}
+
 )
 
 const flowFacturas = addKeyword(['Fac', 'facturas', 'Factura']).addAnswer(
@@ -21,6 +25,14 @@ const flowFacturas = addKeyword(['Fac', 'facturas', 'Factura']).addAnswer(
     {
         media : 'https://awy-network.s3.amazonaws.com/64cd5f9197d9bc001419599c-policy',
     }
+).addAnswer('¿Quieres regresar al menu de opciones?',
+{
+    delay: 5000,
+    capture:true,
+},(ctx, {endFlow}) => {
+    console.log("regreso al menu de opciones");
+}
+
 )
 
 const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
@@ -60,7 +72,7 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
     async (ctx, {flowDynamic} ) =>{ 
         try {
             const polizas = []
-            const poliza = await postData(1,"8118806631");
+            const poliza = await postData(1,"8261362897");
             length = poliza.payload.length;
             for (let i = 0; i < length; i++) {
                 polizas.push({
@@ -123,10 +135,11 @@ const flowMenu = addKeyword(['menu', 'Menu']).addAnswer(
     [flowPolizas,flowPagar,flowFacturas,flowSiniestros,flowMenuOtros]
 )
 
-const flowtemp = addKeyword(['temp']).addAction(
+const flowtemp = addKeyword(['temp']).addAnswer(
+    'Hola, soy un flujo temporal',null,
     async (ctx, {gotoFlow} ) =>{
         console.log("Pasa por flujo temporal", ctx.from);
-        return gotoFlow(flowNoRegistrado);
+        return gotoFlow(flowMenu);
     }
 )
 
@@ -142,7 +155,7 @@ const flowNoRegistrado = addKeyword(['no registrado'],{ sensitive: true }).addAn
     [
         'Nos emociona que hayas llegado a nuestro servicio. 😃 \n \nPara comenzar, por favor proporciona tu información básica para poder ayudarte de la mejor manera posible.',
         '\n¡Gracias por confiar en nosotros! \n \n¡Comencemos! 📋🔒'
-    ]
+    ],
 ).addAnswer(
     '¿Cuál es tu nombre completo?',
     {capture:true},
@@ -211,15 +224,16 @@ const flowDespedida = addKeyword(['adios', 'Gracias', 'Thx','hasta luego', 'bye'
 })
 
 
-
-const flowInicio = addKeyword(EVENTS.WELCOME)
-.addAnswer(
+const flowInicio = addKeyword(EVENTS.WELCOME).addAnswer(
     'Bienvenido al ChatBot de AWY🤖 ¿Quieres iniciar una conversación?',
     {
         capture:true,
     },
     async (ctx, {flowDynamic,endFlow,state,gotoFlow} ) =>{
         //aqui se hace una petición a la api para saber si el cliente es un usuario registrado en la base de datos de awy
+        const telefono = ctx.from.substring(3); // Obtener caracteres después del segundo (índice 2)
+        console.log("El telefono es: ", telefono);
+        const usuario = await getUserInfo('9321114495');
         if (ctx.body == 'Cancelar'){
             console.log("Se cancela la conversación");
             return endFlow(
@@ -228,44 +242,37 @@ const flowInicio = addKeyword(EVENTS.WELCOME)
                 }
             )
         }
-        try {
-            const usuario = await postData(1,"8118806631");
-            if(usuario.ok){
-                console.log("El usuario es un cliente registrado ", ctx.from);
-
-                if (ctx.body == 'Iniciar conversación'){
-                    console.log("Se inicia la conversación");
-                    state.update({ usuarioExiste: true });
-                    //return gotoFlow(flowMenu)
-                    return flowDynamic(
-                        {
-                            body: `Hola, ${ctx.from}`,
-                        }
-                    )
+        if (ctx.body == 'Iniciar conversación'){
+            console.log("Se inicia la conversación");
+            try {
+                if(usuario.payload == null){
+                    state.update({ usuarioExiste: false });
+                    return gotoFlow(flowNoRegistrado);
+                    
                 }
                 
+            } catch (error) {
+                console.error('Error al obtener el usuario:', error.message);
+                console.log("El usuario es un cliente registrado en la base de datos de awy");
+                state.update({ usuarioExiste: true });
             }
-            
-        } catch (error) {
-            console.error('Error al obtener el usuario:', error.message);
-            console.log("El usuario no es un cliente registrado en la base de datos de awy");
-            state.update({ usuarioExiste: false });
-        }
 
-        const myState = state.getMyState()
-        if(myState.usuarioExiste){
-            console.log("Mostrando Menu principal a ", ctx.from);
-            return gotoFlow(flowMenu);
-        }else{
-            console.log("Mostrando Menu de no registrado a ", ctx.from);
-            return gotoFlow(flowNoRegistrado);
+           
+            console.log("El usuario es un cliente registrado ", usuario.payload.name);
+            return flowDynamic(
+                        
+                {
+                    body: `¡Hola *${usuario.payload.name}*! Soy el asistente virtual de AWY. Estoy aquí para ayudarte con cualquier duda que tengas. 😊`
+                }
+            )
+            
         }
-        
+      
     }
 ).addAction(
-    async (ctx, {gotoFlow} ) =>{
-        console.log("Pasa al menu principal", ctx.from);
-        return gotoFlow(flowMenu);
+    async (_, { gotoFlow}) => {
+        console.log("Va al menu principal");
+        return gotoFlow(flowMenu)    
     }
 )
 
