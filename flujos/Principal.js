@@ -2,10 +2,8 @@ const { addKeyword } = require('@bot-whatsapp/bot')
 const { postData } = require('../utils/getPolizaPDF.js')
 const { getUserInfo } = require('../utils/Buscarusuario.js')
 const { EVENTS } = require('@bot-whatsapp/bot')
-const { FlowValidatePage } = require('twilio/lib/rest/studio/v2/flowValidate.js')
 
 
-const flowCotizarAutos = addKeyword(['1', 'autos','auto', 'carro']).addAnswer(['📄 Aquí podrás cotizar autos', 'Entra a https://awy.com.mx/'])
 
 const flowSiniestros = addKeyword(['siniestros', 'siniestro'])
 .addAnswer(['📄 ¿Qué tipo de siniestro quieres levantar?']
@@ -105,13 +103,6 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
 }
 )
 
-const flowCotizar = addKeyword(['cotizar','cot']).addAnswer(
-    ['¿Qué quieres cotizar?','*Autos*','*Vida, Ahorros e inversión*','GMM','Casa y Negocio'],
-    null,
-    null,
-    flowCotizarAutos
-)
-
 
 
 const flowMenuOtros = addKeyword(['otros','Ver otras opciones']).addAnswer(
@@ -127,29 +118,19 @@ const flowMenuOtros = addKeyword(['otros','Ver otras opciones']).addAnswer(
     },
     [flowSiniestros,flowFacturas]
 )
+
+
 const flowMenu = addKeyword(['menu', 'Menu']).addAnswer(
-    '¿Cómo podemos ayudarte hoy? Selecciona una de las siguientes opciones.',
+    '¿Cómo puedo ayudarte hoy? Por favor, elige una de las siguientes opciones:',
     {
         capture:true,
     },null,
     [flowPolizas,flowPagar,flowFacturas,flowSiniestros,flowMenuOtros]
 )
 
-const flowtemp = addKeyword(['temp']).addAnswer(
-    'Hola, soy un flujo temporal',null,
-    async (ctx, {gotoFlow} ) =>{
-        console.log("Pasa por flujo temporal", ctx.from);
-        return gotoFlow(flowMenu);
-    }
-)
 
-const flowAsignarEjecutivo = addKeyword(['ejecutivo', 'Allende', 'Galeana','General Terán', 'Linares', 'Montemorelos', 'Victoria'])
-.addAction(
-    async (ctx, {flowDynamic} ) =>{
-        console.log("sucursal seleccionada:", ctx.body)
-        return flowDynamic(`📍 ${ctx.body}, Nuevo León\n📞 81 8880 6631\n📧}`)
-    }
-)
+
+
 
 const flowNoRegistrado = addKeyword(['no registrado'],{ sensitive: true }).addAnswer(
     [
@@ -219,9 +200,9 @@ const flowNoRegistrado = addKeyword(['no registrado'],{ sensitive: true }).addAn
 )
 
 const flowDespedida = addKeyword(['adios', 'Gracias', 'Thx','hasta luego', 'bye','finalizar chat'])
-    .addAnswer('🙌 Gracias por utilizar el servicio de *Chatbot de AWY*').addAction( ()=>{
-        console.log(" ****** Finalizar conversación ******")
-})
+    .addAnswer('🙌 Gracias por utilizar el servicio de *Chatbot de AWY*').addAnswer(
+        '¡Saliste del Chat. 😔 Para volver a iniciar, simplemente escribe *Hola* o *Inicio*. Estamos aquí para ayudarte. 🙌🤖'
+)
 
 
 const flowInicio = addKeyword(EVENTS.WELCOME).addAnswer(
@@ -280,15 +261,11 @@ const flowInicio = addKeyword(EVENTS.WELCOME).addAnswer(
     module.exports = {
         flowInicio,
         flowMenu,
-        flowtemp,
         flowMenuOtros,
         flowDespedida,
         flowNoRegistrado,
-        flowAsignarEjecutivo,
-        flowCotizar,
         flowPolizas,
         flowPagar,
         flowFacturas,
         flowSiniestros,
-        flowCotizarAutos
     };
