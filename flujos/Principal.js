@@ -1,7 +1,8 @@
 const { addKeyword } = require('@bot-whatsapp/bot')
-const { postData } = require('../utils/getPolizaPDF.js')
+const { getPolizaPDF } = require('../utils/getPolizaPDF.js')
 const { getUserInfo } = require('../utils/Buscarusuario.js')
 const { EVENTS } = require('@bot-whatsapp/bot')
+const { getRecibos } = require('../utils/getRecibos.js')
 
 
 
@@ -37,17 +38,74 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
     [
         '¡Hola! Soy el asistente virtual de AWY. Estoy aquí para ayudarte con tus pagos y cualquier otra consulta que tengas. 😊',
     ]
-).addAnswer([
-    '¡Buenas noticias! Ahora puedes pagar de diferentes maneras en nuestra sucursal:',
-    'Recuerda que siempre estamos aquí para ayudarte en todo lo que necesites. Si tienes alguna duda o requieres asistencia, solo escríbeme. ¡Estoy listo para ayudarte las 24 horas, los 7 días de la semana!',
-]).addAnswer('💳 Pago con tarjeta: Aceptamos tarjetas de crédito y débito Visa, Mastercard, y más. Solo acércate a la caja y podrás pagar de forma rápida y segura.'
-).addAnswer('📲 Pago por transferencia: Si prefieres hacer tus pagos desde la comodidad de tu aplicación bancaria, solo necesitas nuestros datos bancarios. ¡Es fácil y seguro!'
-).addAnswer('🏦 Pago en OXXO: Si te gusta pagar en efectivo, proporciona al cajero la referencia que se encuentra en tu póliza o documento de pago. indica el monto a pagar correspondiente a tu compra o servicio y listo! recibirás un comprobante de pago que confirma la transacción.',
-).addAnswer(['¡Gracias por confiar en AWY Agente de Seguros! Esperamos verte pronto en nuestra sucursal. 😊🏢',
-              'Visita nuetra pagina web https://awy.com.mx/']
+).addAnswer(
+    '*Para conocer el recibo de pago escribe tu número póliza*',
+    {capture:true},
+    async (ctx, {state})=>{
+        try {
+            const listaRecibos= [];
+            const poliza = ctx.body;
+            const recibo =  await getRecibos(3,poliza);
+            const traducciones = {
+                'inProcessToRenewed': 'En proceso de renovación',
+                'active': 'Activo',
+                'expired': 'Vencido',
+                'reject': 'Rechazado',
+                'paid': 'Pagado',
+                'liquidated': 'Liquidado',
+                'liquidated From Client': 'Liquidado por el cliente',
+                'apply': 'Aplicado',
+                'cancelled': 'Cancelado'
+              };
+              
+
+            for (let i = 0; i < recibo.payload.length; i++) {
+                const valorEnEspanol = traducciones[recibo.payload[i].status] || 'Valor desconocido';
+                const fechaISO = recibo.payload[i].dateOfPayment;
+
+                // Crear un objeto de fecha a partir de la cadena ISO
+                const fecha = new Date(fechaISO);
+
+                // Extraer el año, el mes y el día
+                const year = fecha.getFullYear();
+                const month = fecha.getMonth() + 1; // Los meses comienzan desde 0, así que sumamos 1
+                const day = fecha.getDate();
+
+                // Crear una cadena con el formato acortado
+                const fechaAcortada = `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
+
+                listaRecibos.push({
+                    body: `Estatus del Recibo *${valorEnEspanol}* \nMonto Total *$${recibo.payload[i].amount}* \nVencimiento de Pago *${fechaAcortada}*`,
+                    media: recibo.payload[i].file
+                });
+                console.log('Recibo obtenida:', recibo.payload[i].file);
+                //iterar en todos los elementos de la lista para agregarlos a la respuesta dentro del return flowDynamic
+            } 
+
+            await state.update({ recibos: listaRecibos })
+        } catch (error) {
+            console.error('Error al obtener Recibos:', error.message);
+        }
+        
+    }
+).addAnswer(
+    '*Estos son tus recibos 🗒️:*',
+    null,
+    async (ctx, {state,flowDynamic})=>{
+        try {
+            const recibos = state.getMyState()
+            return flowDynamic( 
+                recibos.recibos
+            )
+        } catch (error) {
+            console.error('Error al obtener Recibos:', error.message);
+        }
+        
+    }
 ).addAnswer('¿Quieres regresar al menu de opciones?',
 {
-    capture:true
+    delay: 5000,
+    capture:true,
 },(ctx, {endFlow}) => {
     console.log("regreso al menu de opciones");
 }
@@ -70,7 +128,7 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
     async (ctx, {flowDynamic} ) =>{ 
         try {
             const polizas = []
-            const poliza = await postData(1,"8261362897");
+            const poliza = await getPolizaPDF(1,"9321114495");
             length = poliza.payload.length;
             for (let i = 0; i < length; i++) {
                 polizas.push({
@@ -214,7 +272,7 @@ const flowInicio = addKeyword(EVENTS.WELCOME).addAnswer(
         //aqui se hace una petición a la api para saber si el cliente es un usuario registrado en la base de datos de awy
         const telefono = ctx.from.substring(3); // Obtener caracteres después del segundo (índice 2)
         console.log("El telefono es: ", telefono);
-        const usuario = await getUserInfo('9321114495');
+        const usuario = await getUserInfo('9321114498');
         if (ctx.body == 'Cancelar'){
             console.log("Se cancela la conversación");
             return endFlow(

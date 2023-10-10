@@ -1,14 +1,14 @@
 const  newtoken = require( './getToken.js');
 const endpoint = 'https://network.awy.digital/api/public/awy-external/get-info';
 
-async function getPolizaPDF(type,telephone) {
+async function getRecibos(type, noPolicy) {
     try {
         const token = await newtoken.getToken();
         console.log('\x1b[32m%s\x1b[0m','token obtenido:', token.token);
 
         const data = {
             type: type,
-            telephone: telephone
+            noPolicy: noPolicy
         };
 
         // Configura las opciones para la solicitud
@@ -46,5 +46,5 @@ async function getPolizaPDF(type,telephone) {
 
 
 module.exports = {
-    getPolizaPDF 
+    getRecibos 
 }
