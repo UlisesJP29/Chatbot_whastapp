@@ -3,6 +3,7 @@ const { getPolizaPDF } = require('../utils/getPolizaPDF.js')
 const { getUserInfo } = require('../utils/Buscarusuario.js')
 const { EVENTS } = require('@bot-whatsapp/bot')
 const { getRecibos } = require('../utils/getRecibos.js')
+const getFechaCercana = require('../utils/fechaCercana.js');
 
 
 
@@ -43,66 +44,59 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
     {capture:true},
     async (ctx, {state})=>{
         try {
-            const listaRecibos= [];
+            
+
             const poliza = ctx.body;
             const recibo =  await getRecibos(3,poliza);
-            const traducciones = {
-                'inProcessToRenewed': 'En proceso de renovación',
-                'active': 'Activo',
-                'expired': 'Vencido',
-                'reject': 'Rechazado',
-                'paid': 'Pagado',
-                'liquidated': 'Liquidado',
-                'liquidated From Client': 'Liquidado por el cliente',
-                'apply': 'Aplicado',
-                'cancelled': 'Cancelado'
-              };
-              
+            const recibos = getFechaCercana(recibo);
 
-            for (let i = 0; i < recibo.payload.length; i++) {
-                const valorEnEspanol = traducciones[recibo.payload[i].status] || 'Valor desconocido';
-                const fechaISO = recibo.payload[i].dateOfPayment;
+            console.log(recibos);
 
-                // Crear un objeto de fecha a partir de la cadena ISO
-                const fecha = new Date(fechaISO);
+            await state.update({ recibos: recibos });
 
-                // Extraer el año, el mes y el día
-                const year = fecha.getFullYear();
-                const month = fecha.getMonth() + 1; // Los meses comienzan desde 0, así que sumamos 1
-                const day = fecha.getDate();
-
-                // Crear una cadena con el formato acortado
-                const fechaAcortada = `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
-
-                listaRecibos.push({
-                    body: `Estatus del Recibo *${valorEnEspanol}* \nMonto Total *$${recibo.payload[i].amount}* \nVencimiento de Pago *${fechaAcortada}*`,
-                    media: recibo.payload[i].file
-                });
-                console.log('Recibo obtenida:', recibo.payload[i].file);
-                //iterar en todos los elementos de la lista para agregarlos a la respuesta dentro del return flowDynamic
-            } 
-
-            await state.update({ recibos: listaRecibos })
         } catch (error) {
             console.error('Error al obtener Recibos:', error.message);
         }
         
     }
 ).addAnswer(
-    '*Estos son tus recibos 🗒️:*',
+    '*Estos son tus recibos Activos 🗒️:*',
     null,
     async (ctx, {state,flowDynamic})=>{
         try {
-            const recibos = state.getMyState()
+            const recibos = state.getMyState();
+            console.log(recibos.recibos.listaRecibosActivos);
+
             return flowDynamic( 
-                recibos.recibos
+                
+                recibos.recibos.listaRecibosActivos
+                
             )
         } catch (error) {
             console.error('Error al obtener Recibos:', error.message);
         }
         
     }
-).addAnswer('¿Quieres regresar al menu de opciones?',
+).addAnswer(
+    '*Estos son tus recibos Vencidos:*',
+    {delay:5000},
+    async (ctx, {state,flowDynamic})=>{
+        try {
+            const recibos = state.getMyState();
+            console.log(recibos.recibos.listaRecibosVencidos);
+
+            return flowDynamic( 
+                
+                recibos.recibos.listaRecibosVencidos
+                
+            )
+        } catch (error) {
+            console.error('Error al obtener Recibos:', error.message);
+        }
+        
+    }
+)
+.addAnswer('¿Quieres regresar al menu de opciones?',
 {
     delay: 5000,
     capture:true,
@@ -127,6 +121,8 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
     null,
     async (ctx, {flowDynamic} ) =>{ 
         try {
+            const telefono = ctx.from.substring(3); // Obtener caracteres después del segundo (índice 2)
+            console.log("El telefono es: ", telefono);
             const polizas = []
             const poliza = await getPolizaPDF(1,"9321114495");
             length = poliza.payload.length;
@@ -272,7 +268,7 @@ const flowInicio = addKeyword(EVENTS.WELCOME).addAnswer(
         //aqui se hace una petición a la api para saber si el cliente es un usuario registrado en la base de datos de awy
         const telefono = ctx.from.substring(3); // Obtener caracteres después del segundo (índice 2)
         console.log("El telefono es: ", telefono);
-        const usuario = await getUserInfo('9321114498');
+        const usuario = await getUserInfo('9321114495');
         if (ctx.body == 'Cancelar'){
             console.log("Se cancela la conversación");
             return endFlow(
@@ -293,11 +289,12 @@ const flowInicio = addKeyword(EVENTS.WELCOME).addAnswer(
             } catch (error) {
                 console.error('Error al obtener el usuario:', error.message);
                 console.log("El usuario es un cliente registrado en la base de datos de awy");
-                state.update({ usuarioExiste: true });
+                
             }
 
            
             console.log("El usuario es un cliente registrado ", usuario.payload.name);
+            await state.update({ usuarioExiste: true });
             return flowDynamic(
                         
                 {
@@ -309,9 +306,13 @@ const flowInicio = addKeyword(EVENTS.WELCOME).addAnswer(
       
     }
 ).addAction(
-    async (_, { gotoFlow}) => {
+    async (_, { gotoFlow, state}) => {
+
         console.log("Va al menu principal");
-        return gotoFlow(flowMenu)    
+        const Usuario = state.getMyState()
+        if (Usuario.usuarioExiste) {
+            return gotoFlow(flowMenu)    
+        }
     }
 )
 

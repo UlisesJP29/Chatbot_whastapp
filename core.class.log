@@ -1,0 +1,153 @@
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'Finalizar chat' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_b070171e-ddf4-4029-aa17-f06abf9c3598',
+  keyword: 'key_28fe368e-581f-4580-adfe-59672a346971',
+  answer: '🙌 Gracias por utilizar el servicio de *Chatbot de AWY*',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: 'c7d0ca5b106aa6f5b886c09b0ef1f6d6'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_bb48f087-7156-4cd9-a752-719fcf3fc53e',
+  keyword: 'ans_b070171e-ddf4-4029-aa17-f06abf9c3598',
+  answer: '¡Saliste del Chat. 😔 Para volver a iniciar, simplemente escribe *Hola* o *Inicio*. Estamos aquí para ayudarte. 🙌🤖',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '86523bb3c6cd9f255af104010f15beab'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'inicio' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_7c45de6e-50d2-41be-8a4b-257804e7094b',
+  keyword: 'key_1efd912c-cf86-41da-8a96-ccff364bede6',
+  answer: 'Bienvenido al ChatBot de AWY🤖 ¿Quieres iniciar una conversación?',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '44a33bea683367e198d411978a965b99'
+}
+[handleMsg]:  {
+  from: '5219321114495',
+  to: '5218261354156',
+  body: 'Iniciar conversación'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_f8975f39-06dd-4bd3-9cfa-ce3abe528c20',
+  keyword: 'ans_7c45de6e-50d2-41be-8a4b-257804e7094b',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'b689cc1c65d96b1c83610e6f43b24226'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'Pagar' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_1f0dca88-6d66-4f77-aa2e-63c817b829e5',
+  keyword: 'key_c5fa9e9c-de06-478f-a669-2d0d6613944f',
+  answer: '¡Hola! Soy el asistente virtual de AWY. Estoy aquí para ayudarte con tus pagos y cualquier otra consulta que tengas. 😊',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '2cd4e723829d6ccdf8f9d55ff0b8c4c8'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_285cc71d-63b0-4f2b-bb02-ae638d0a554b',
+  keyword: 'ans_1f0dca88-6d66-4f77-aa2e-63c817b829e5',
+  answer: '*Para conocer el recibo de pago escribe tu número póliza*',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '95aaa8a54286875e42d9fab2aa60dcba'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'E2514015887-0' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_2e9aecc1-6f9c-447e-8863-4764a28a6e2b',
+  keyword: 'ans_285cc71d-63b0-4f2b-bb02-ae638d0a554b',
+  answer: '*Estos son tus recibos Activos 🗒️:*',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '8fa317f2fde3691a2a71a7d6b42c516d'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_bece2d2b-be45-44ef-a09c-01efcc5b2bdb',
+  keyword: 'ans_2e9aecc1-6f9c-447e-8863-4764a28a6e2b',
+  answer: '*Estos son tus recibos Vencidos:*',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 5000,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'a5db0303686a18eb68394704a8205932'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_54a43df5-c8d8-429b-88a4-43fffca6aa1e',
+  keyword: 'ans_bece2d2b-be45-44ef-a09c-01efcc5b2bdb',
+  answer: '¿Quieres regresar al menu de opciones?',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 5000,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '06d45f84db2d7d70558622687e78fc88'
+}
