@@ -85,6 +85,9 @@ function getFechaCercana(recibo){
         }
         if (estatus == "Vencido") {
             listaRecibosVencidos.push({
+                body: `⚠️ ATENCIÓN! ⚠️\nPor favor, *contacta a tu ejecutivo*.\nTienes un recibo *vencido* y se debe pagar lo más pronto posible.`,
+            });
+            listaRecibosVencidos.push({
                 body: `Estatus del Recibo *${estatus}* \nMonto Total *$${recibo.payload[i].amount}* \nVencimiento de Pago *${vencimiento}*`,
                 media: recibo.payload[i].file
             });
@@ -95,8 +98,15 @@ function getFechaCercana(recibo){
         //iterar en todos los elementos de la lista para agregarlos a la respuesta dentro del return flowDynamic
     } 
 
-    console.log(listaRecibosActivos);
-    return {listaRecibosActivos, listaRecibosVencidos};
+    if (listaRecibosVencidos.length === 0) {
+        const result = listaRecibosActivos;
+        return {result};
+
+    } else{
+        const result = listaRecibosVencidos;
+        return {result};
+    }
+
 
     
 

@@ -60,16 +60,17 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
         
     }
 ).addAnswer(
-    '*Estos son tus recibos Activos 🗒️:*',
+    '*Este es tu próximo recibo a pagar 🗒️:*',
     null,
     async (ctx, {state,flowDynamic})=>{
         try {
             const recibos = state.getMyState();
-            console.log(recibos.recibos.listaRecibosActivos);
+            console.log(recibos.recibos.result);
+            console.log(recibos.recibos.result);
 
             return flowDynamic( 
                 
-                recibos.recibos.listaRecibosActivos
+                recibos.recibos.result
                 
             )
         } catch (error) {
@@ -78,25 +79,16 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
         
     }
 ).addAnswer(
-    '*Estos son tus recibos Vencidos:*',
-    {delay:5000},
-    async (ctx, {state,flowDynamic})=>{
-        try {
-            const recibos = state.getMyState();
-            console.log(recibos.recibos.listaRecibosVencidos);
-
-            return flowDynamic( 
-                
-                recibos.recibos.listaRecibosVencidos
-                
-            )
-        } catch (error) {
-            console.error('Error al obtener Recibos:', error.message);
-        }
-        
-    }
-)
-.addAnswer('¿Quieres regresar al menu de opciones?',
+    '¡Buenas noticias! Ahora puedes pagar de diferentes maneras en nuestra sucursal:',
+    {
+        delay: 10000,
+    },
+).addAnswer('💳 Pago con tarjeta: Aceptamos tarjetas de crédito y débito Visa, Mastercard, y más. Solo acércate a la caja y podrás pagar de forma rápida y segura.'
+).addAnswer('📲 Pago por transferencia: Si prefieres hacer tus pagos desde la comodidad de tu aplicación bancaria, solo necesitas nuestros datos bancarios. ¡Es fácil y seguro!'
+).addAnswer('🏦 Pago en OXXO: Si te gusta pagar en efectivo, proporciona al cajero la referencia que se encuentra en tu póliza o documento de pago. indica el monto a pagar correspondiente a tu compra o servicio y listo! recibirás un comprobante de pago que confirma la transacción.',
+).addAnswer(['¡Gracias por confiar en AWY Agente de Seguros! Esperamos verte pronto en nuestra sucursal. 😊🏢',
+              'Visita nuetra pagina web https://awy.com.mx/']
+).addAnswer('¿Quieres regresar al menu de opciones?',
 {
     delay: 5000,
     capture:true,
