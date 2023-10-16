@@ -290,7 +290,7 @@ const flowInicio = addKeyword(EVENTS.WELCOME).addAnswer(
             return flowDynamic(
                         
                 {
-                    body: `¡Hola *${usuario.payload.name}*! Soy el asistente virtual de AWY. Estoy aquí para ayudarte con cualquier duda que tengas. 😊`
+                    body: `¡Hola *${usuario.payload.name}*! \nSoy el asistente virtual de AWY. Estoy aquí para ayudarte con cualquier duda que tengas. 😊`
                 }
             )
             

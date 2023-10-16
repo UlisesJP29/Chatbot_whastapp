@@ -1,0 +1,276 @@
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'hola' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_311a688b-96c8-4f5e-9cae-4eefc02ab5c7',
+  keyword: 'key_ff4b640a-8b4b-4e9f-80dd-03f3a070c373',
+  answer: 'Bienvenido al ChatBot de AWY🤖 ¿Quieres iniciar una conversación?',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'e04b6ba803d4e59feed81e7e3113fe51'
+}
+[handleMsg]:  {
+  from: '5219321114495',
+  to: '5218261354156',
+  body: 'Iniciar conversación'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_fb1c8ab3-d78a-431f-86fa-ac119ceb8188',
+  keyword: 'ans_311a688b-96c8-4f5e-9cae-4eefc02ab5c7',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '64459e8f976c7e95e67dc4f4a35cf6b8'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'Pólizas' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_09b94b1a-9f5b-48bd-ac5b-b54830f59713',
+  keyword: 'key_f062dbb0-daa3-428d-b1a4-d00dbb1e4525',
+  answer: '👋 Soy el asistente virtual de AWY Seguros. ¡Tengo una excelente noticia para ti! 😃 Ahora puedes acceder a tus pólizas de una manera más fácil y rápida a través de nuestro servicio en línea. 🚀📈',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '6bf2e25757d2183264d79cbe9ff8cdfa'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_10a74537-2821-47d8-ac7b-92e26ecb174d',
+  keyword: 'ans_09b94b1a-9f5b-48bd-ac5b-b54830f59713',
+  answer: '¡Estamos aquí para hacer tu vida más sencilla! 😄🤖',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: 'd7a060cb5a66f1c6fa05696c25fcbf1c'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_4dbc9b8c-19b6-4728-b157-ca716dd62427',
+  keyword: 'ans_10a74537-2821-47d8-ac7b-92e26ecb174d',
+  answer: '📄 Aquí te muestro las pólizas que tienes disponibles: ',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '861c9503d7cafa78b36a49c520eb7434'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_e5cccce0-f690-4a7c-bf62-74256cb57863',
+  keyword: 'ans_4dbc9b8c-19b6-4728-b157-ca716dd62427',
+  answer: '¿Quieres regresar al menu de opciones?',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 5000,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '7e211b5e01783c21125549691b025a96'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'Menu' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_dc901197-6e6a-4bb7-a647-116b7985c330',
+  keyword: 'key_8b0e352b-266b-4636-bcce-d7fd80b148fc',
+  answer: '¿Cómo puedo ayudarte hoy? Por favor, elige una de las siguientes opciones:',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object]
+    ],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '1ec754bd3e36984dce48da5750881dfd'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'Pagar' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_80929f85-d332-4102-8b6e-7a059efc886c',
+  keyword: 'key_baa203e5-10e7-4161-87d4-789b1d9c3ed5',
+  answer: '¡Hola! Soy el asistente virtual de AWY. Estoy aquí para ayudarte con tus pagos y cualquier otra consulta que tengas. 😊',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '9c4004cedbd0cf908eff329c8148adcd'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_b09763bc-3529-44de-a95d-4879d2c98083',
+  keyword: 'ans_80929f85-d332-4102-8b6e-7a059efc886c',
+  answer: '*Para conocer el recibo de pago escribe tu número póliza*',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'e76c9e0e885e5d1f717149cb185d6a23'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'E2514016218-0' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_86d6a680-56f0-4a15-8caf-33aceb0145fb',
+  keyword: 'ans_b09763bc-3529-44de-a95d-4879d2c98083',
+  answer: '*Este es tu próximo recibo a pagar 🗒️:*',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '5b6a0c8ff8a405d7a7463e1354272b94'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_8a09351a-d93c-4994-b2be-34ad0af5b81d',
+  keyword: 'ans_86d6a680-56f0-4a15-8caf-33aceb0145fb',
+  answer: '¡Buenas noticias! Ahora puedes pagar de diferentes maneras en nuestra sucursal:',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 10000,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '288ebebdd3c7e9df20fbb5a284db2ca8'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_8b0599b4-6262-478d-a1ab-f19feefb5107',
+  keyword: 'ans_8a09351a-d93c-4994-b2be-34ad0af5b81d',
+  answer: '💳 Pago con tarjeta: Aceptamos tarjetas de crédito y débito Visa, Mastercard, y más. Solo acércate a la caja y podrás pagar de forma rápida y segura.',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '8dac9aa8d159f986b60f0f93374e6d0f'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_399cfb50-70b6-4604-9e32-3f030486da21',
+  keyword: 'ans_8b0599b4-6262-478d-a1ab-f19feefb5107',
+  answer: '📲 Pago por transferencia: Si prefieres hacer tus pagos desde la comodidad de tu aplicación bancaria, solo necesitas nuestros datos bancarios. ¡Es fácil y seguro!',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '4c99d7e4fbdd98b18cf7d56522263f34'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_b85d160c-1921-4e81-b0d5-0137ffc65c2e',
+  keyword: 'ans_399cfb50-70b6-4604-9e32-3f030486da21',
+  answer: '🏦 Pago en OXXO: Si te gusta pagar en efectivo, proporciona al cajero la referencia que se encuentra en tu póliza o documento de pago. indica el monto a pagar correspondiente a tu compra o servicio y listo! recibirás un comprobante de pago que confirma la transacción.',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '6a2a6c144602f5abef21ff309522e67c'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_95855555-eca3-4717-944c-f05651b7b98a',
+  keyword: 'ans_b85d160c-1921-4e81-b0d5-0137ffc65c2e',
+  answer: '¡Gracias por confiar en AWY Agente de Seguros! Esperamos verte pronto en nuestra sucursal. 😊🏢\n' +
+    'Visita nuetra pagina web https://awy.com.mx/',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '7f1ce15284cf7724c0f497e489f77e5a'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_1465490f-37ba-454c-b567-a8fc43ee4861',
+  keyword: 'ans_95855555-eca3-4717-944c-f05651b7b98a',
+  answer: '¿Quieres regresar al menu de opciones?',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 5000,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'd773db9e647e77b45e3243fe0608be80'
+}
