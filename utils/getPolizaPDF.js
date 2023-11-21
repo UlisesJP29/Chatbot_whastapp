@@ -4,7 +4,7 @@ const endpoint = 'https://network.awy.digital/api/public/awy-external/get-info';
 async function getPolizaPDF(type,telephone) {
     try {
         const token = await newtoken.getToken();
-        console.log('\x1b[32m%s\x1b[0m','token obtenido:', token.token);
+        //console.log('\x1b[32m%s\x1b[0m','token obtenido:', token.token);
 
         const data = {
             type: type,
@@ -21,8 +21,8 @@ async function getPolizaPDF(type,telephone) {
             body: JSON.stringify(data) // Convierte el objeto JSON en una cadena JSON
         };
 
-        console.log('Cuerpo de la solicitud:', JSON.stringify(data));
-        console.log('Opciones de la solicitud:', requestOptions)
+        //console.log('Cuerpo de la solicitud:', JSON.stringify(data));
+        //console.log('Opciones de la solicitud:', requestOptions)
 
         const response = await fetch(endpoint, requestOptions);
         console.log(response.status);
@@ -34,7 +34,7 @@ async function getPolizaPDF(type,telephone) {
         const responseData = await response.json();
         
             // Se maneja la respuesta JSON recibida
-        console.log('Respuesta del servidor:', responseData);
+        //console.log('Respuesta del servidor:', responseData);
         return responseData;
         
     } catch (error) {

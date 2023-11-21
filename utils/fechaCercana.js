@@ -107,12 +107,6 @@ function getFechaCercana(recibo){
         return {result};
     }
 
-
-    
-
-
-
-
     
 }
 

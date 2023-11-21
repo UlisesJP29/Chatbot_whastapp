@@ -7,7 +7,7 @@ const endpoint = 'https://network.awy.digital/api/public/awy-external/customer/'
 async function getUserInfo(phoneNumber) {
     try {
         const token = await newtoken.getToken();
-        console.log('\x1b[32m%s\x1b[0m','token obtenido:', token.token);
+        //console.log('\x1b[32m%s\x1b[0m','token obtenido:', token.token);
 
         // Configura las opciones para la solicitud
         const requestOptions = {
@@ -18,7 +18,7 @@ async function getUserInfo(phoneNumber) {
             }
         };
 
-        console.log('Opciones de la solicitud:', requestOptions)
+        //console.log('Opciones de la solicitud:', requestOptions)
 
         const response = await fetch((endpoint+phoneNumber), requestOptions);
         console.log(response.status);
@@ -30,7 +30,7 @@ async function getUserInfo(phoneNumber) {
         const responseData = await response.json();
         
             // Se maneja la respuesta JSON recibida
-        console.log('Respuesta del servidor:', responseData);
+        //console.log('Respuesta del servidor:', responseData);
         return responseData;
         
     } catch (error) {

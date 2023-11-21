@@ -4,6 +4,7 @@ const { getUserInfo } = require('../utils/Buscarusuario.js')
 const { EVENTS } = require('@bot-whatsapp/bot')
 const { getRecibos } = require('../utils/getRecibos.js')
 const getFechaCercana = require('../utils/fechaCercana.js');
+const {esNumero,esCadenaDeLetrasConEspacios} = require('../utils/esNumerico.js')
 
 
 
@@ -98,40 +99,121 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
 
 )
 
- const flowPolizas = addKeyword(['polizas', 'poliza',"dos",'Pólizas']).addAnswer(
-    [
-        '👋 Soy el asistente virtual de AWY Seguros. ¡Tengo una excelente noticia para ti! 😃 Ahora puedes acceder a tus pólizas de una manera más fácil y rápida a través de nuestro servicio en línea. 🚀📈'
-    ]
- ).addAnswer(
-    [
-        '¡Estamos aquí para hacer tu vida más sencilla! 😄🤖'
-    ]
- ).addAnswer(
-    [
-        '📄 Aquí te muestro las pólizas que tienes disponibles: '
-    ],
-    null,
-    async (ctx, {flowDynamic} ) =>{ 
-        try {
-            const telefono = ctx.from.substring(3); // Obtener caracteres después del segundo (índice 2)
-            console.log("El telefono es: ", telefono);
-            const polizas = []
-            const poliza = await getPolizaPDF(1,"9321114495");
-            length = poliza.payload.length;
-            for (let i = 0; i < length; i++) {
-                polizas.push({
-                    body: `📄 Poliza No.${i+1} - ${poliza.payload[i].noPolicy}`,
-                    media: poliza.payload[i].policyPDF.Location
-                });
-                console.log('poliza obtenida:', poliza.payload[i].policyPDF.Location);
-                //iterar en todos los elementos de la lista para agregarlos a la respuesta dentro del return flowDynamic
+ const flowPolizas = addKeyword(['polizas', 'poliza','Pólizas']).addAction(
+    async (ctx,{state,flowDynamic}) => {
+        console.log('inicia el flujo de pólizas...');
+        const RamosObtenidos = [];
+        const RamosMapa = [];
+
+        //hacemos la llamada al API para obtener los datos del cliente.
+        const telefono = ctx.from.substring(3); 
+        console.log("El telefono es: ", telefono);
+        const poliza = await getPolizaPDF(1,"9321114495");
+        RamosObtenidos.push('Selecciona el tipo de póliza que quieres ver:\n');
+        poliza.payload.forEach((obj,i) => {
+            if (obj.ramo && obj.ramo.name) {
+                RamosObtenidos.push(`( *${i+1}* )  ${obj.ramo.name}\n`);
+                RamosMapa.push(obj.ramo.name);
+                i++;
             }
-            return flowDynamic(
-                polizas
-            )
-        } catch (error) {
-            console.error('Error al obtener el pdf:', error.message);
+        });
+        const mensaje = RamosObtenidos.join(" ");
+        console.log(RamosObtenidos);
+        console.log(mensaje);
+        await state.update({ listaDePolizas: poliza,Ramos:RamosMapa })
+        //await state.update({ Ramos: RamosMapa });
+
+        return flowDynamic(mensaje);
+    }
+ ).addAction({
+        capture:true
+    },
+   async (ctx, {state,gotoFlow}) => {
+        if (esNumero(ctx.body) || esCadenaDeLetrasConEspacios(ctx.body)) {//revisamos que sea un numero o una cadena solamente de caracteres. Pero no se vale si es un numero con letras
+            console.log('se capturo el valor el: ',ctx.body);
+            const RamoSeleccionado = ctx.body;//puede ser un numero o una palabra
+            //extraemos el estado que guarda las polzias del cliente y la lista de los Ramos
+            const infoPolizas = state.getMyState();
+            const mostrarDescripcion = [];
+            mostrarDescripcion.push('Selecciona la póliza que quieres ver:\n');
+            const listaDescripcion = new Map();
+            //Se crea un mapa con la lista de ramos con su identificador. 
+            const ramosMap = new Map();
+            infoPolizas.Ramos.forEach((ramo, indice) => {//esto me sirve para identificar si es un numero o una palabra por eso un mapa o diccionario
+                ramosMap.set(indice, ramo);
+            });
+            console.log(ramosMap);
+            if (esNumero(RamoSeleccionado)) {
+                //vamos a revisar que numero selecciona el usuario 
+                infoPolizas.listaDePolizas.payload.forEach((obj,index) => {
+                    console.log('dentro del ciclo:',index);
+                    if (obj.ramo.name && ramosMap.get(RamoSeleccionado-1) == obj.ramo.name) {
+                        console.log(`dentro del ciclo x${obj.ramo.name}`);
+                        mostrarDescripcion.push(
+                            `( *${index +1}* )  ${obj.description}\n`
+                //           { body: `( *${index +1}* )  ${obj.description}\n`}
+                            );
+                        listaDescripcion.set(index,obj.description)
+                        console.log(`el usuario selecciono: ${ramosMap.get(RamoSeleccionado-1)} y ${obj.ramo.name}. 
+                        \npoliza: ${obj.noPolicy} y ${obj.description}`);
+                    }
+                });
+                const mensaje = mostrarDescripcion.join(" ");
+                console.log(listaDescripcion);
+                console.log(mensaje);
+                await state.update({ mensaje: mensaje, listaDescripcion: listaDescripcion })
+                //await flowDynamic(mensaje);
+            }
+        } else{
+
+            //await flowDynamic('No lo escribiste correctamente, vuelve a intentarlo');
+            return gotoFlow(flowPolizas);  
         }
+}).addAction(//devolvemos el mensaje guardado en el state porque no se puede capturar y mandar un mensaje en el mismo addaction
+    async (_, { flowDynamic,state }) => {
+        const respuesta = state.getMyState();
+        return flowDynamic(respuesta.mensaje);
+    }
+).addAction({capture:true},//capturamos el numero de poliza que quiere ver el cliente
+async (ctx, { flowDynamic,state }) => {
+    if (esNumero(ctx.body) || esCadenaDeLetrasConEspacios(ctx.body)) {//revisamos que sea un numero o una cadena solamente de caracteres. Pero no se vale si es un numero con letras
+        console.log('se capturo el valor ',ctx.body);
+        const poliza = ctx.body;//puede ser un numero o una palabra
+        //extraemos el estado que guarda las polzias del cliente y la lista de los Ramos
+        const infoPolizas = state.getMyState();
+        const mostrarPolzias = [];
+        //Se crea un mapa con la lista de ramos con su identificador. 
+        const descripcionMap = new Map();
+        infoPolizas.listaDescripcion.forEach((descripcion, indice) => {//esto me sirve para identificar si es un numero o una palabra por eso un mapa o diccionario
+            descripcionMap.set(indice, descripcion);
+        });
+        console.log(descripcionMap);
+
+        if (esNumero(poliza)) {
+            //vamos a revisar que numero selecciona el usuario 
+            infoPolizas.listaDePolizas.payload.forEach((obj,index) => {
+                console.log('dentro del ciclo: x',index);
+                if (obj.description && descripcionMap.get(poliza-1) == obj.description) {
+                    console.log(`dentro del ciclo x${obj.descripcion}`);
+                    mostrarPolzias.push({
+                        body: `📄 Poliza ${obj.noPolicy}`,
+                        media: obj.policyPDF.Location
+                    });
+                    console.log(`el usuario selecciono: ${descripcionMap.get(poliza-1)} y ${obj.ramo.name}. descripciónactual: ${descripcionMap.get(poliza-1)} y ${obj.description}`);
+                }
+            });
+            const mensaje = mostrarPolzias.join(" ");
+            console.log(mostrarPolzias);
+            await state.update({ mensaje: mostrarPolzias })
+            //await flowDynamic(mensaje);
+        }
+    }
+}
+).addAction(
+    async (_, { flowDynamic,state }) => {
+        const respuesta = state.getMyState();
+        console.log(respuesta.mensaje);
+        return flowDynamic(respuesta.mensaje);
     }
 ).addAnswer('¿Quieres regresar al menu de opciones?',
 {
@@ -167,15 +249,12 @@ const flowMenuOtros = addKeyword(['otros','Ver otras opciones']).addAnswer(
 
 
 const flowMenu = addKeyword(['menu', 'Menu']).addAnswer(
-    '¿Cómo puedo ayudarte hoy? Por favor, elige una de las siguientes opciones:',
+    '¿Cómo puedo ayudarte? \n\nElige una de las siguientes opciones:',
     {
         capture:true,
     },null,
     [flowPolizas,flowPagar,flowFacturas,flowSiniestros,flowMenuOtros]
 )
-
-
-
 
 
 const flowNoRegistrado = addKeyword(['no registrado'],{ sensitive: true }).addAnswer(
@@ -251,54 +330,34 @@ const flowDespedida = addKeyword(['adios', 'Gracias', 'Thx','hasta luego', 'bye'
 )
 
 
-const flowInicio = addKeyword(EVENTS.WELCOME).addAnswer(
-    'Bienvenido al ChatBot de AWY🤖 ¿Quieres iniciar una conversación?',
-    {
-        capture:true,
-    },
+const flowInicio = addKeyword(EVENTS.WELCOME).addAction(
     async (ctx, {flowDynamic,endFlow,state,gotoFlow} ) =>{
         //aqui se hace una petición a la api para saber si el cliente es un usuario registrado en la base de datos de awy
         const telefono = ctx.from.substring(3); // Obtener caracteres después del segundo (índice 2)
         console.log("El telefono es: ", telefono);
         const usuario = await getUserInfo('9321114495');
-        if (ctx.body == 'Cancelar'){
-            console.log("Se cancela la conversación");
-            return endFlow(
-                {
-                    body: ['❌ Su solicitud ha sido cancelada ❌ \nSi quieres volver a iniciar una conversación escribe *hola*']
-                }
-            )
-        }
-        if (ctx.body == 'Iniciar conversación'){
-            console.log("Se inicia la conversación");
-            try {
-                if(usuario.payload == null){
-                    state.update({ usuarioExiste: false });
-                    return gotoFlow(flowNoRegistrado);
-                    
-                }
-                
-            } catch (error) {
-                console.error('Error al obtener el usuario:', error.message);
-                console.log("El usuario es un cliente registrado en la base de datos de awy");
+        console.log("Se inicia la conversación");
+        try {
+            if(usuario.payload == null){
+                state.update({ usuarioExiste: false });
+                return gotoFlow(flowNoRegistrado);
                 
             }
-
-           
-            console.log("El usuario es un cliente registrado ", usuario.payload.name);
-            await state.update({ usuarioExiste: true });
-            return flowDynamic(
-                        
-                {
-                    body: `¡Hola *${usuario.payload.name}*! \nSoy el asistente virtual de AWY. Estoy aquí para ayudarte con cualquier duda que tengas. 😊`
-                }
-            )
+        } catch (error) {
+            console.error('Error al obtener el usuario:', error.message);
+            console.log("El usuario es un cliente registrado en la base de datos de awy");
             
         }
-      
+        console.log("El usuario es un cliente registrado ", usuario.payload.name);
+        await state.update({ usuarioExiste: true });
+        return flowDynamic(
+            {
+                body: `¡Hola *${usuario.payload.name}*! \n\nSoy Tu Asistente Virtual de AWY Agentes de Seguros 😊`
+            }
+        )
     }
 ).addAction(
-    async (_, { gotoFlow, state}) => {
+     (_, { gotoFlow, state}) => {
 
         console.log("Va al menu principal");
         const Usuario = state.getMyState()
