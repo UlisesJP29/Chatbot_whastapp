@@ -3,7 +3,7 @@ const { getPolizaPDF } = require('../utils/getPolizaPDF.js')
 const { getUserInfo } = require('../utils/Buscarusuario.js')
 const { EVENTS } = require('@bot-whatsapp/bot')
 const { getRecibos } = require('../utils/getRecibos.js')
-const getFechaCercana = require('../utils/fechaCercana.js');
+const {getFechaCercana,ordenarFechas} = require('../utils/fechaCercana.js');
 const {esNumero,esCadenaDeLetrasConEspacios} = require('../utils/esNumerico.js')
 
 
@@ -45,15 +45,13 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
     {capture:true},
     async (ctx, {state})=>{
         try {
-            
-
             const poliza = ctx.body;
             const recibo =  await getRecibos(3,poliza);
-            const recibos = getFechaCercana(recibo);
+            const recibos = getFechaCercana(recibo,false);
 
-            console.log(recibos);
+            console.log(recibos[0].mensaje);
 
-            await state.update({ recibos: recibos });
+            await state.update({ recibos: recibos[0].mensaje });
 
         } catch (error) {
             console.error('Error al obtener Recibos:', error.message);
@@ -66,7 +64,6 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
     async (ctx, {state,flowDynamic})=>{
         try {
             const recibos = state.getMyState();
-            console.log(recibos.recibos.result);
             console.log(recibos.recibos.result);
 
             return flowDynamic( 
@@ -99,7 +96,7 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
 
 )
 
- const flowPolizas = addKeyword(['polizas', 'poliza','Pólizas']).addAction(
+const flowPolizas = addKeyword(['polizas', 'poliza','Pólizas']).addAction(//muestra los ramos de las pólizas
     async (ctx,{state,flowDynamic}) => {
         console.log('inicia el flujo de pólizas...');
         const RamosObtenidos = [];
@@ -121,76 +118,101 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
         console.log(RamosObtenidos);
         console.log(mensaje);
         await state.update({ listaDePolizas: poliza,Ramos:RamosMapa })
-        //await state.update({ Ramos: RamosMapa });
 
         return flowDynamic(mensaje);
     }
- ).addAction({
+ ).addAction({// capturamos el tipo de ramo que necesita el usuario para mostrar cada bien asegurado por orden de vigencia
         capture:true
     },
    async (ctx, {state,gotoFlow}) => {
-        if (esNumero(ctx.body) || esCadenaDeLetrasConEspacios(ctx.body)) {//revisamos que sea un numero o una cadena solamente de caracteres. Pero no se vale si es un numero con letras
+        if (esNumero(ctx.body) || esCadenaDeLetrasConEspacios(ctx.body)) {
             console.log('se capturo el valor el: ',ctx.body);
-            const RamoSeleccionado = ctx.body;//puede ser un numero o una palabra
-            //extraemos el estado que guarda las polzias del cliente y la lista de los Ramos
+            const RamoSeleccionado = ctx.body;
+
             const infoPolizas = state.getMyState();
+            const PolizaDescripcionMap = [];
             const mostrarDescripcion = [];
+            const compararFecha = [];
             mostrarDescripcion.push('Selecciona la póliza que quieres ver:\n');
             const listaDescripcion = new Map();
-            //Se crea un mapa con la lista de ramos con su identificador. 
+
             const ramosMap = new Map();
-            infoPolizas.Ramos.forEach((ramo, indice) => {//esto me sirve para identificar si es un numero o una palabra por eso un mapa o diccionario
+            infoPolizas.Ramos.forEach((ramo, indice) => {
                 ramosMap.set(indice, ramo);
             });
             console.log(ramosMap);
+
             if (esNumero(RamoSeleccionado)) {
-                //vamos a revisar que numero selecciona el usuario 
-                infoPolizas.listaDePolizas.payload.forEach((obj,index) => {
+
+                infoPolizas.listaDePolizas.payload.forEach(async (obj,index) => {
                     console.log('dentro del ciclo:',index);
+
                     if (obj.ramo.name && ramosMap.get(RamoSeleccionado-1) == obj.ramo.name) {
                         console.log(`dentro del ciclo x${obj.ramo.name}`);
-                        mostrarDescripcion.push(
-                            `( *${index +1}* )  ${obj.description}\n`
-                //           { body: `( *${index +1}* )  ${obj.description}\n`}
-                            );
-                        listaDescripcion.set(index,obj.description)
+                        const recibos = await getRecibos(3,obj.noPolicy);
+                        console.log(recibos);
+                        const fechaDeVigencia = getFechaCercana(recibos, true);
+                        console.log(fechaDeVigencia.result);
+                        PolizaDescripcionMap.push(
+                            {
+                                fecha: fechaDeVigencia.result,
+                                descripcion: "Vehículo - RAM 1500 A/AC, AUT/STD",
+                            }
+                        )
+                        compararFecha.push(fechaDeVigencia.result);
+                        console.log("Este es el objeto que se guardo en la lista",PolizaDescripcionMap);
                         console.log(`el usuario selecciono: ${ramosMap.get(RamoSeleccionado-1)} y ${obj.ramo.name}. 
                         \npoliza: ${obj.noPolicy} y ${obj.description}`);
                     }
                 });
+
+                const fechasOrdenadas =  ordenarFechas(compararFecha);
+                console.log("Se guardan las fechas ordenadas y se agregan los descripciones");
+                fechasOrdenadas.forEach(fecha=>{
+                    PolizaDescripcionMap.forEach(datos,index =>{
+                        if (datos.fecha === fecha) {
+                            mostrarDescripcion.push(
+                                `( *${index +1}* )  ${datos.descripcion}\n`
+                            );
+                            listaDescripcion.set(index,datos.descripcion);
+                          }
+                    });
+                });
+
                 const mensaje = mostrarDescripcion.join(" ");
                 console.log(listaDescripcion);
                 console.log(mensaje);
-                await state.update({ mensaje: mensaje, listaDescripcion: listaDescripcion })
-                //await flowDynamic(mensaje);
-            }
-        } else{
 
-            //await flowDynamic('No lo escribiste correctamente, vuelve a intentarlo');
+                await state.update({ mensaje: mensaje, listaDescripcion: listaDescripcion })
+            }
+        }else{
+
             return gotoFlow(flowPolizas);  
         }
-}).addAction(//devolvemos el mensaje guardado en el state porque no se puede capturar y mandar un mensaje en el mismo addaction
+}).addAction(// mostramos la lista con los bienes asegurados - se hará por orden de vigencia
     async (_, { flowDynamic,state }) => {
         const respuesta = state.getMyState();
         return flowDynamic(respuesta.mensaje);
     }
-).addAction({capture:true},//capturamos el numero de poliza que quiere ver el cliente
-async (ctx, { flowDynamic,state }) => {
-    if (esNumero(ctx.body) || esCadenaDeLetrasConEspacios(ctx.body)) {//revisamos que sea un numero o una cadena solamente de caracteres. Pero no se vale si es un numero con letras
+).addAction(//mostramos la póliza que requiere el usuario.
+    {
+        capture:true 
+    },
+async (ctx, { state }) => {
+    if (esNumero(ctx.body) || esCadenaDeLetrasConEspacios(ctx.body)) {
         console.log('se capturo el valor ',ctx.body);
-        const poliza = ctx.body;//puede ser un numero o una palabra
-        //extraemos el estado que guarda las polzias del cliente y la lista de los Ramos
+        const poliza = ctx.body; 
+
         const infoPolizas = state.getMyState();
         const mostrarPolzias = [];
-        //Se crea un mapa con la lista de ramos con su identificador. 
+
         const descripcionMap = new Map();
-        infoPolizas.listaDescripcion.forEach((descripcion, indice) => {//esto me sirve para identificar si es un numero o una palabra por eso un mapa o diccionario
+        infoPolizas.listaDescripcion.forEach((descripcion, indice) => {
             descripcionMap.set(indice, descripcion);
         });
         console.log(descripcionMap);
 
         if (esNumero(poliza)) {
-            //vamos a revisar que numero selecciona el usuario 
             infoPolizas.listaDePolizas.payload.forEach((obj,index) => {
                 console.log('dentro del ciclo: x',index);
                 if (obj.description && descripcionMap.get(poliza-1) == obj.description) {
@@ -205,7 +227,6 @@ async (ctx, { flowDynamic,state }) => {
             const mensaje = mostrarPolzias.join(" ");
             console.log(mostrarPolzias);
             await state.update({ mensaje: mostrarPolzias })
-            //await flowDynamic(mensaje);
         }
     }
 }

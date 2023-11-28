@@ -1,0 +1,100 @@
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'hola' }
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'hola' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_5e8b65ca-ec97-4b10-bb78-896504909de0',
+  keyword: 'key_c5b51089-a5fa-4e6b-8448-8b57fda1ee22',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '943e6d9b797408f8faeb22aa8c4573af'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_2506ecba-247a-456e-b113-fd3e8d3886f3',
+  keyword: 'ans_5e8b65ca-ec97-4b10-bb78-896504909de0',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'cf016f80c93bac8e259da19b83740436'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'Ver Pólizas' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_7712a926-9b6c-406b-b3fb-c53bb5e7087b',
+  keyword: 'key_496e149f-9e1f-42f0-a833-5c094722d6af',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '6278242153fb9964fa72c2acfa0a91b9'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_f738a2ca-86c0-4eaf-9ad4-4add46e7da33',
+  keyword: 'ans_7712a926-9b6c-406b-b3fb-c53bb5e7087b',
+  answer: '__capture_only_intended__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '11c67fd0ee42f93b2e9bfff252a4e3f7'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: '1' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_37cca4eb-fbb7-4ea9-a8a7-9ff405fd2a0e',
+  keyword: 'ans_f738a2ca-86c0-4eaf-9ad4-4add46e7da33',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '1f3975eb8ffc17a4f50cd3d573d728fb'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_63859b5a-f237-467b-9025-c9dc50bc8d09',
+  keyword: 'ans_37cca4eb-fbb7-4ea9-a8a7-9ff405fd2a0e',
+  answer: '__capture_only_intended__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '838fc50ac739ae671ea5d0ba9dd9bd32'
+}

@@ -6,14 +6,18 @@ function hacerFechaCorta(fechas) {
     const day = fecha.getDate();
     const fechaAcortada = `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
 
+
+    console.log("la fecha acortada es:",fechaAcortada);
     return fechaAcortada;
+
 }
 
 
-function getFechaCercana(recibo){
+function getFechaCercana(recibo,soloFechaDeVigencia){
     const listaRecibosActivos= [];
     const listaRecibosVencidos= [];
     const fechasDeRecibos = [];
+    const fechaVigenciaExpirada = [];
     const traducciones = {
         'inProcessToRenewed': 'En proceso de renovación',
         'active': 'Activo',
@@ -92,22 +96,46 @@ function getFechaCercana(recibo){
                 media: recibo.payload[i].file
             });
             console.log('Recibo obtenida:', recibo.payload[i].file);
+            fechaVigenciaExpirada.push(vencimiento);
         }
 
         
         //iterar en todos los elementos de la lista para agregarlos a la respuesta dentro del return flowDynamic
     } 
 
-    if (listaRecibosVencidos.length === 0) {
-        const result = listaRecibosActivos;
-        return {result};
+    if (listaRecibosVencidos.length === 0) {//solo hay recibos Activos
+        console.log(listaRecibosActivos);
+        if (soloFechaDeVigencia) {
+            const result = fechaCorta;
+            return {result};
+        } else {
+            const result = listaRecibosActivos;
+            return {result};
+        }
 
-    } else{
-        const result = listaRecibosVencidos;
-        return {result};
+    } else{ // hay un recibo vencido
+        console.log(listaRecibosVencidos);
+        if (soloFechaDeVigencia) {
+            console.log(fechaVigenciaExpirada[0]);
+            const result = fechaVigenciaExpirada[0];
+            return {result};
+        } else {
+            const result = listaRecibosVencidos;
+            return {result};
+        }
+        
     }
 
     
 }
 
-module.exports = getFechaCercana;
+function ordenarFechas(fechas) {
+    fechas.sort((a, b) => new Date(a) - new Date(b));
+  
+    return fechas;
+  }
+
+module.exports = {
+    getFechaCercana,
+    ordenarFechas};
+    
