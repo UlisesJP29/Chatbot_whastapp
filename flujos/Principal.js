@@ -105,7 +105,7 @@ const flowPolizas = addKeyword(['polizas', 'poliza','Pólizas']).addAction(//mue
         //hacemos la llamada al API para obtener los datos del cliente.
         const telefono = ctx.from.substring(3); 
         console.log("El telefono es: ", telefono);
-        const poliza = await getPolizaPDF(1,"9321114495");
+        const poliza = await getPolizaPDF(1,telefono);
         RamosObtenidos.push('Selecciona el tipo de póliza que quieres ver:\n');
         poliza.payload.forEach((obj,i) => {
             if (obj.ramo && obj.ramo.name) {
@@ -143,33 +143,38 @@ const flowPolizas = addKeyword(['polizas', 'poliza','Pólizas']).addAction(//mue
             console.log(ramosMap);
 
             if (esNumero(RamoSeleccionado)) {
+                const listaPolizas = infoPolizas.listaDePolizas.payload;
 
-                infoPolizas.listaDePolizas.payload.forEach(async (obj,index) => {
-                    console.log('dentro del ciclo:',index);
-
-                    if (obj.ramo.name && ramosMap.get(RamoSeleccionado-1) == obj.ramo.name) {
+                for (let index = 0; index < listaPolizas.length; index++) {
+                    const obj = listaPolizas[index];
+            
+                    console.log('dentro del ciclo:', index);
+            
+                    if (obj.ramo.name && ramosMap.get(RamoSeleccionado - 1) == obj.ramo.name) {
                         console.log(`dentro del ciclo x${obj.ramo.name}`);
-                        const recibos = await getRecibos(3,obj.noPolicy);
+                        const recibos = await getRecibos(3, obj.noPolicy);
                         console.log(recibos);
-                        const fechaDeVigencia = getFechaCercana(recibos, true);
+                        const fechaDeVigencia = await getFechaCercana(recibos, true);
                         console.log(fechaDeVigencia.result);
-                        PolizaDescripcionMap.push(
-                            {
-                                fecha: fechaDeVigencia.result,
-                                descripcion: "Vehículo - RAM 1500 A/AC, AUT/STD",
-                            }
-                        )
+            
+                        PolizaDescripcionMap.push({
+                            fecha: fechaDeVigencia.result,
+                            descripcion: obj.description,
+                        });
+            
                         compararFecha.push(fechaDeVigencia.result);
-                        console.log("Este es el objeto que se guardo en la lista",PolizaDescripcionMap);
-                        console.log(`el usuario selecciono: ${ramosMap.get(RamoSeleccionado-1)} y ${obj.ramo.name}. 
-                        \npoliza: ${obj.noPolicy} y ${obj.description}`);
+            
+                        console.log("Este es el objeto que se guardó en la lista", PolizaDescripcionMap);
+            
+                        console.log(`el usuario seleccionó: ${ramosMap.get(RamoSeleccionado - 1)} y ${obj.ramo.name}.
+                            \npoliza: ${obj.noPolicy} y ${obj.description}`);
                     }
-                });
+                }
 
                 const fechasOrdenadas =  ordenarFechas(compararFecha);
                 console.log("Se guardan las fechas ordenadas y se agregan los descripciones");
-                fechasOrdenadas.forEach(fecha=>{
-                    PolizaDescripcionMap.forEach(datos,index =>{
+                fechasOrdenadas.forEach((fecha, index)=>{
+                    PolizaDescripcionMap.forEach(datos =>{
                         if (datos.fecha === fecha) {
                             mostrarDescripcion.push(
                                 `( *${index +1}* )  ${datos.descripcion}\n`
@@ -213,6 +218,7 @@ async (ctx, { state }) => {
         console.log(descripcionMap);
 
         if (esNumero(poliza)) {
+            console.log(infoPolizas.listaDePolizas.payload);
             infoPolizas.listaDePolizas.payload.forEach((obj,index) => {
                 console.log('dentro del ciclo: x',index);
                 if (obj.description && descripcionMap.get(poliza-1) == obj.description) {
