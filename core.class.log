@@ -1,0 +1,71 @@
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'hola' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_3f800273-3da7-47a1-ae99-4505b4563ef7',
+  keyword: 'key_867d58cc-49fc-4e98-8cf4-107c609f5cb9',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '1b7d719bb7540b4e8bac21c47744deaa'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_a4d41245-0c36-4336-b495-34d1e51d788c',
+  keyword: 'ans_3f800273-3da7-47a1-ae99-4505b4563ef7',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '4df89a8310559f910ad3894d6c49f2cf'
+}
+[handleMsg]:  {
+  from: '5219321114495',
+  to: '5218261354156',
+  body: 'Ver Recibos de Pago'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_30ba2575-a3a7-424e-a892-6e4dc1f4d0ab',
+  keyword: 'key_0a2fd573-9cda-4902-b0df-a356e689e103',
+  answer: '*Recibos próximos por pagar*',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'd113aec26013286c8e79eb516f82605e'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_9e8e4bb0-90b5-4ee1-935f-938c1b292b01',
+  keyword: 'ans_30ba2575-a3a7-424e-a892-6e4dc1f4d0ab',
+  answer: '*Este es tu próximo recibo a pagar 🗒️:*',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'c3912eb0c8ed78c1e8952d06fadbe085'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: '.' }

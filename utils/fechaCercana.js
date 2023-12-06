@@ -13,7 +13,7 @@ function hacerFechaCorta(fechas) {
 }
 
 
-function getFechaCercana(recibo,soloFechaDeVigencia){
+function getFechaCercana(recibo,soloFechaDeVigencia,descripcion){
     const listaRecibosActivos= [];
     const listaRecibosVencidos= [];
     const fechasDeRecibos = [];
@@ -82,17 +82,14 @@ function getFechaCercana(recibo,soloFechaDeVigencia){
 
         if (estatus == "Activo" && fechaCorta == vencimiento) {
             listaRecibosActivos.push({
-                body: `Estatus del Recibo *${estatus}* \nMonto Total *$${recibo.payload[i].amount}* \nVencimiento de Pago *${vencimiento}*`,
+                body: `*${vencimiento}* *${recibo.payload[i].serie}* \n${descripcion}`,
                 media: recibo.payload[i].file
             });
             console.log('Recibo obtenida:', recibo.payload[i].file);
         }
         if (estatus == "Vencido") {
             listaRecibosVencidos.push({
-                body: `⚠️ ATENCIÓN! ⚠️\nPor favor, *contacta a tu ejecutivo*.\nTienes un recibo *vencido* y se debe pagar lo más pronto posible.`,
-            });
-            listaRecibosVencidos.push({
-                body: `Estatus del Recibo *${estatus}* \nMonto Total *$${recibo.payload[i].amount}* \nVencimiento de Pago *${vencimiento}*`,
+                body: `Estatus del Recibo *${estatus}* - *${vencimiento}* *${recibo.payload[i].serie}*\n${descripcion}*`,
                 media: recibo.payload[i].file
             });
             console.log('Recibo obtenida:', recibo.payload[i].file);
@@ -103,8 +100,8 @@ function getFechaCercana(recibo,soloFechaDeVigencia){
         //iterar en todos los elementos de la lista para agregarlos a la respuesta dentro del return flowDynamic
     } 
 
-    if (listaRecibosVencidos.length === 0) {//solo hay recibos Activos
-        console.log(listaRecibosActivos);
+    if (listaRecibosVencidos.length === 0) {//solo recibos Activos
+        console.log("Solo se encontraron recibos activos\n",listaRecibosActivos);
         if (soloFechaDeVigencia) {
             const result = fechaCorta;
             return {result};
@@ -114,7 +111,7 @@ function getFechaCercana(recibo,soloFechaDeVigencia){
         }
 
     } else{ // hay un recibo vencido
-        console.log(listaRecibosVencidos);
+        console.log("El recibo se encuentra vencido:\n",listaRecibosVencidos);
         if (soloFechaDeVigencia) {
             console.log(fechaVigenciaExpirada[0]);
             const result = fechaVigenciaExpirada[0];

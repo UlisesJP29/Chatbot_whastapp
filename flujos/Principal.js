@@ -37,38 +37,76 @@ const flowFacturas = addKeyword(['Fac', 'facturas', 'Factura']).addAnswer(
 )
 
 const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
-    [
-        '¡Hola! Soy el asistente virtual de AWY. Estoy aquí para ayudarte con tus pagos y cualquier otra consulta que tengas. 😊',
-    ]
-).addAnswer(
-    '*Para conocer el recibo de pago escribe tu número póliza*',
-    {capture:true},
+    "*Recibos próximos por pagar*",
+    null,
     async (ctx, {state})=>{
-        try {
-            const poliza = ctx.body;
-            const recibo =  await getRecibos(3,poliza);
-            const recibos = getFechaCercana(recibo,false);
-
-            console.log(recibos[0].mensaje);
-
-            await state.update({ recibos: recibos[0].mensaje });
-
-        } catch (error) {
-            console.error('Error al obtener Recibos:', error.message);
-        }
         
+            //hacemos la llamada al API para obtener los datos del cliente.
+            const telefono = ctx.from.substring(3); 
+            console.log("El telefono es: ", telefono);
+            const polizas = await getPolizaPDF(1,telefono);
+            const listaPoliza = [];
+            console.log("a punto de entrar al for",polizas);
+            for(let i = 0; i < polizas.payload.length; i++) {
+                const obj = polizas.payload[i];
+                console.log("poliza: ", obj.noPolicy);
+                const recibo =  await getRecibos(3,obj.noPolicy);
+                const fechaCerna = getFechaCercana(recibo,true,obj.descripcion);
+                if (obj.noPolicy) {
+                  const data = {
+                    poliza: obj.noPolicy,
+                    vigencia: fechaCerna.result,
+                    descripcion: obj.description
+                  };
+                  listaPoliza.push(data);
+                }
+            }
+            console.log("lista desordenada: ",listaPoliza);
+            // Función de comparación para ordenar por fecha de vigencia de forma ascendente
+            const compararFechas = (a, b) => {
+                // Convertir las fechas de vigencia a objetos Date
+                const fechaA = new Date(a.vigencia);
+                const fechaB = new Date(b.vigencia);
+            
+                // Comparar las fechas y retornar el resultado
+                return fechaA - fechaB;
+            };
+            // Ordenar la lista de objetos por fecha de vigencia
+            listaPoliza.sort(compararFechas);
+            console.log("lista ordenada: ",listaPoliza);
+
+            const MensajesDeRecibos = [];
+            for (let i = 0; i < listaPoliza.length; i++) {
+                const info = listaPoliza[i];
+                console.log(`La póliza que se busca es : ${info}`);
+                const recibo =  await getRecibos(3,info.poliza);
+                const reciboCercano = getFechaCercana(recibo,false,info.descripcion);
+                console.log(reciboCercano);
+                reciboCercano.result.forEach((mensaje, i)=> {
+                    console.log("mensaje", mensaje.body);
+                    MensajesDeRecibos.push(`*( ${i++} )* ${mensaje.body}`);
+                    MensajesDeRecibos.push(`*( ${i++} )* ${mensaje.body}`);
+
+                });
+            }
+            
+            console.log("Cargando los mensajes para ser enviados:\n",MensajesDeRecibos);
+            
+
+            await state.update({ recibos: MensajesDeRecibos });
+
     }
 ).addAnswer(
     '*Este es tu próximo recibo a pagar 🗒️:*',
-    null,
+    {capture:true},
     async (ctx, {state,flowDynamic})=>{
         try {
-            const recibos = state.getMyState();
-            console.log(recibos.recibos.result);
+            const mensajes = state.getMyState();
+            console.log("dentro de la respuesta:\n",mensajes.recibos);
 
             return flowDynamic( 
                 
-                recibos.recibos.result
+                mensajes.recibos
                 
             )
         } catch (error) {
@@ -76,16 +114,6 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
         }
         
     }
-).addAnswer(
-    '¡Buenas noticias! Ahora puedes pagar de diferentes maneras en nuestra sucursal:',
-    {
-        delay: 10000,
-    },
-).addAnswer('💳 Pago con tarjeta: Aceptamos tarjetas de crédito y débito Visa, Mastercard, y más. Solo acércate a la caja y podrás pagar de forma rápida y segura.'
-).addAnswer('📲 Pago por transferencia: Si prefieres hacer tus pagos desde la comodidad de tu aplicación bancaria, solo necesitas nuestros datos bancarios. ¡Es fácil y seguro!'
-).addAnswer('🏦 Pago en OXXO: Si te gusta pagar en efectivo, proporciona al cajero la referencia que se encuentra en tu póliza o documento de pago. indica el monto a pagar correspondiente a tu compra o servicio y listo! recibirás un comprobante de pago que confirma la transacción.',
-).addAnswer(['¡Gracias por confiar en AWY Agente de Seguros! Esperamos verte pronto en nuestra sucursal. 😊🏢',
-              'Visita nuetra pagina web https://awy.com.mx/']
 ).addAnswer('¿Quieres regresar al menu de opciones?',
 {
     delay: 5000,
@@ -154,7 +182,7 @@ const flowPolizas = addKeyword(['polizas', 'poliza','Pólizas']).addAction(//mue
                         console.log(`dentro del ciclo x${obj.ramo.name}`);
                         const recibos = await getRecibos(3, obj.noPolicy);
                         console.log(recibos);
-                        const fechaDeVigencia = await getFechaCercana(recibos, true);
+                        const fechaDeVigencia =  getFechaCercana(recibos, true);
                         console.log(fechaDeVigencia.result);
             
                         PolizaDescripcionMap.push({
