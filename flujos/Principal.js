@@ -36,9 +36,7 @@ const flowFacturas = addKeyword(['Fac', 'facturas', 'Factura']).addAnswer(
 
 )
 
-const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
-    "*Recibos próximos por pagar*",
-    null,
+const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAction(
     async (ctx, {state})=>{
         
             //hacemos la llamada al API para obtener los datos del cliente.
@@ -76,6 +74,7 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
             console.log("lista ordenada: ",listaPoliza);
 
             const MensajesDeRecibos = [];
+            const infoGuardada = [];
             for (let i = 0; i < listaPoliza.length; i++) {
                 const info = listaPoliza[i];
                 console.log(`La póliza que se busca es : ${info}`);
@@ -84,8 +83,11 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
                 console.log(reciboCercano);
                 reciboCercano.result.forEach((mensaje, i)=> {
                     console.log("mensaje", mensaje.body);
-                    MensajesDeRecibos.push(`*( ${i++} )* ${mensaje.body}`);
-                    MensajesDeRecibos.push(`*( ${i++} )* ${mensaje.body}`);
+                    console.log("mensaje", mensaje.media);
+                    console.log("mensaje", mensaje.status);
+                    MensajesDeRecibos.push(`*( ${i+1} )* ${mensaje.body}`);
+                    MensajesDeRecibos.push(`*( ${i+2} )* ${mensaje.body}`);
+                    infoGuardada.push({mensaje});
 
                 });
             }
@@ -93,12 +95,12 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
             console.log("Cargando los mensajes para ser enviados:\n",MensajesDeRecibos);
             
 
-            await state.update({ recibos: MensajesDeRecibos });
+            await state.update({ recibos: MensajesDeRecibos, seleccionUsuario: infoGuardada});
 
     }
 ).addAnswer(
-    '*Este es tu próximo recibo a pagar 🗒️:*',
-    {capture:true},
+    '*Estos son tus próximos recibos a pagar 🗒️:*',
+    null,
     async (ctx, {state,flowDynamic})=>{
         try {
             const mensajes = state.getMyState();
@@ -113,6 +115,35 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAnswer(
             console.error('Error al obtener Recibos:', error.message);
         }
         
+    }
+).addAction(
+    {capture:true},
+    async(ctx,{state,flowDynamic}) =>{
+        /*
+            -Cuando se captura la entrada se busca el recibo que requiere la persona.
+            -Si es un recibo vencido se envia directamente a atención al cliente para hacer el pago.
+        */
+        const UsuaroNumero = ctx.body -1;
+        if (esNumero(ctx.body) && ctx.body>0) {
+            const elementos = state.getMyState();
+            console.log(elementos.seleccionUsuario);
+            const estadoMensaje = elementos.seleccionUsuario[UsuaroNumero].mensaje.status;
+            console.log(estadoMensaje);
+            if(estadoMensaje != "Vencido"){
+                return flowDynamic(
+                    {
+                        body: elementos.seleccionUsuario[UsuaroNumero].mensaje.body,
+                        media: elementos.seleccionUsuario[UsuaroNumero].mensaje.media
+                    }
+                );
+            }else{
+                return flowDynamic(
+                    [{body:"Tu recibo esta vencido, Por favor comunicarse con Caja para hacer el pago lo más pronto posible"},
+                    {body:"Llamar a Caja AWY"}]
+                );
+            }
+            
+        }
     }
 ).addAnswer('¿Quieres regresar al menu de opciones?',
 {

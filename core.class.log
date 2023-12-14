@@ -1,7 +1,7 @@
 [handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'hola' }
 [QUEUE_SE_ENVIO]:  {
-  ref: 'ans_3f800273-3da7-47a1-ae99-4505b4563ef7',
-  keyword: 'key_867d58cc-49fc-4e98-8cf4-107c609f5cb9',
+  ref: 'ans_18975bde-153f-4734-8bf5-3a5e93e87223',
+  keyword: 'key_8cdae022-364c-410b-9811-63b5c21ea726',
   answer: '__call_action__',
   options: {
     media: null,
@@ -13,11 +13,11 @@
     keyword: {},
     callback: true
   },
-  refSerialize: '1b7d719bb7540b4e8bac21c47744deaa'
+  refSerialize: '5b10e8da6a6b2c42ed9d69c40859da83'
 }
 [QUEUE_SE_ENVIO]:  {
-  ref: 'ans_a4d41245-0c36-4336-b495-34d1e51d788c',
-  keyword: 'ans_3f800273-3da7-47a1-ae99-4505b4563ef7',
+  ref: 'ans_66724216-350f-41aa-97a4-d2e79aa59991',
+  keyword: 'ans_18975bde-153f-4734-8bf5-3a5e93e87223',
   answer: '__call_action__',
   options: {
     media: null,
@@ -29,7 +29,7 @@
     keyword: {},
     callback: true
   },
-  refSerialize: '4df89a8310559f910ad3894d6c49f2cf'
+  refSerialize: '9ad32f79f4bb2bbd74f31b11f617da86'
 }
 [handleMsg]:  {
   from: '5219321114495',
@@ -37,9 +37,9 @@
   body: 'Ver Recibos de Pago'
 }
 [QUEUE_SE_ENVIO]:  {
-  ref: 'ans_30ba2575-a3a7-424e-a892-6e4dc1f4d0ab',
-  keyword: 'key_0a2fd573-9cda-4902-b0df-a356e689e103',
-  answer: '*Recibos próximos por pagar*',
+  ref: 'ans_3238b01e-cdcf-4061-99cf-0346bc7b4515',
+  keyword: 'key_c4d1ab5b-8696-4fdf-9884-a992941c66bf',
+  answer: '__call_action__',
   options: {
     media: null,
     buttons: [],
@@ -50,12 +50,28 @@
     keyword: {},
     callback: true
   },
-  refSerialize: 'd113aec26013286c8e79eb516f82605e'
+  refSerialize: '5105779b040a22693ccc07dc6642ef50'
 }
 [QUEUE_SE_ENVIO]:  {
-  ref: 'ans_9e8e4bb0-90b5-4ee1-935f-938c1b292b01',
-  keyword: 'ans_30ba2575-a3a7-424e-a892-6e4dc1f4d0ab',
-  answer: '*Este es tu próximo recibo a pagar 🗒️:*',
+  ref: 'ans_0f9cb55a-c410-412f-b28c-66abed8a8a3c',
+  keyword: 'ans_3238b01e-cdcf-4061-99cf-0346bc7b4515',
+  answer: '*Estos son tus próximos recibos a pagar 🗒️:*',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '5296c9ccf2416eb678f4b2ade14d791a'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_b00d9330-5331-45f5-bc64-1361250d0f3b',
+  keyword: 'ans_0f9cb55a-c410-412f-b28c-66abed8a8a3c',
+  answer: '__capture_only_intended__',
   options: {
     media: null,
     buttons: [],
@@ -66,6 +82,6 @@
     keyword: {},
     callback: true
   },
-  refSerialize: 'c3912eb0c8ed78c1e8952d06fadbe085'
+  refSerialize: '5167b691d7f4446d8cfbaa80ab90534a'
 }
-[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: '.' }
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: '1' }

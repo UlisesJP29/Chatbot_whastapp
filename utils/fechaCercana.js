@@ -82,15 +82,17 @@ function getFechaCercana(recibo,soloFechaDeVigencia,descripcion){
 
         if (estatus == "Activo" && fechaCorta == vencimiento) {
             listaRecibosActivos.push({
-                body: `*${vencimiento}* *${recibo.payload[i].serie}* \n${descripcion}`,
-                media: recibo.payload[i].file
+                body: `*${vencimiento}* Recibo *${recibo.payload[i].serie}*\n*${descripcion}*`,
+                media: recibo.payload[i].file,
+                status: estatus
             });
             console.log('Recibo obtenida:', recibo.payload[i].file);
         }
         if (estatus == "Vencido") {
             listaRecibosVencidos.push({
-                body: `Estatus del Recibo *${estatus}* - *${vencimiento}* *${recibo.payload[i].serie}*\n${descripcion}*`,
-                media: recibo.payload[i].file
+                body: `*${vencimiento}* Recibo *${recibo.payload[i].serie}*\n*${descripcion}*`,
+                media: recibo.payload[i].file,
+                status: estatus
             });
             console.log('Recibo obtenida:', recibo.payload[i].file);
             fechaVigenciaExpirada.push(vencimiento);
