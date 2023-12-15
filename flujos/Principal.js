@@ -86,7 +86,6 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAction(
                     console.log("mensaje", mensaje.media);
                     console.log("mensaje", mensaje.status);
                     MensajesDeRecibos.push(`*( ${i+1} )* ${mensaje.body}`);
-                    MensajesDeRecibos.push(`*( ${i+2} )* ${mensaje.body}`);
                     infoGuardada.push({mensaje});
 
                 });
@@ -118,27 +117,37 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAction(
     }
 ).addAction(
     {capture:true},
+    async(ctx,{state,}) =>{
+        const UsuaroNumero = ctx.body -1;
+        await state.update({ seleccion: UsuaroNumero});
+
+    }
+).addAction(
     async(ctx,{state,flowDynamic}) =>{
         /*
             -Cuando se captura la entrada se busca el recibo que requiere la persona.
             -Si es un recibo vencido se envia directamente a atención al cliente para hacer el pago.
         */
-        const UsuaroNumero = ctx.body -1;
+        const elementos = state.getMyState();
+        const UsuaroNumero = elementos.seleccion;
         if (esNumero(ctx.body) && ctx.body>0) {
-            const elementos = state.getMyState();
             console.log(elementos.seleccionUsuario);
             const estadoMensaje = elementos.seleccionUsuario[UsuaroNumero].mensaje.status;
             console.log(estadoMensaje);
             if(estadoMensaje != "Vencido"){
                 return flowDynamic(
-                    {
+                    [{
                         body: elementos.seleccionUsuario[UsuaroNumero].mensaje.body,
                         media: elementos.seleccionUsuario[UsuaroNumero].mensaje.media
-                    }
+                    },
+                    {body: "Toma las referencias del PDF anexo y paga en banco o desde tu App de banco."},
+                    {body: "Cargo telefónico a tarjeta. \n *se enlistan  numeros de la aseguradora*"},
+                    {body: "Llamar a caja AWY"}
+                ]
                 );
             }else{
                 return flowDynamic(
-                    [{body:"Tu recibo esta vencido, Por favor comunicarse con Caja para hacer el pago lo más pronto posible"},
+                    [{body:"¡Atención! ⚠️ *Tu recibo está vencido*. 🆘 *Comunícate ya mismo con Caja y evita contratiempos*. 💼💸 ¡Gracias por tu pronta acción! 🚀🔥"},
                     {body:"Llamar a Caja AWY"}]
                 );
             }
