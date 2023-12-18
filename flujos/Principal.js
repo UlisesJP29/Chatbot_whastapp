@@ -134,26 +134,48 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAction(
             console.log(elementos.seleccionUsuario);
             const estadoMensaje = elementos.seleccionUsuario[UsuaroNumero].mensaje.status;
             console.log(estadoMensaje);
-            if(estadoMensaje != "Vencido"){
+            if(estadoMensaje == "Vencido"){
                 return flowDynamic(
-                    [{
-                        body: elementos.seleccionUsuario[UsuaroNumero].mensaje.body,
-                        media: elementos.seleccionUsuario[UsuaroNumero].mensaje.media
-                    },
-                    {body: "Toma las referencias del PDF anexo y paga en banco o desde tu App de banco."},
-                    {body: "Cargo telefónico a tarjeta. \n *se enlistan  numeros de la aseguradora*"},
-                    {body: "Llamar a caja AWY"}
-                ]
+                    [
+                        {
+                            body: elementos.seleccionUsuario[UsuaroNumero].mensaje.body,
+                            media: elementos.seleccionUsuario[UsuaroNumero].mensaje.media
+                        }
+                    ]
                 );
             }else{
                 return flowDynamic(
-                    [{body:"¡Atención! ⚠️ *Tu recibo está vencido*. 🆘 *Comunícate ya mismo con Caja y evita contratiempos*. 💼💸 ¡Gracias por tu pronta acción! 🚀🔥"},
+                    [{body:"¡Atención! ⚠️ *Tu recibo está vencido*.\n\n 🆘 *Comunícate ya mismo con Caja y evita contratiempos*. 💼💸 \n\n¡Gracias por tu pronta acción! 🚀🔥"},
                     {body:"Llamar a Caja AWY"}]
                 );
             }
             
         }
     }
+).addAction(
+    async(ctx,{state,flowDynamic}) =>{
+        /*
+            -Cuando se captura la entrada se busca el recibo que requiere la persona.
+            -Si es un recibo vencido se envia directamente a atención al cliente para hacer el pago.
+        */
+        const elementos = state.getMyState();
+        const UsuaroNumero = elementos.seleccion;
+        if (esNumero(ctx.body) && ctx.body>0) {
+            console.log(elementos.seleccionUsuario);
+            const estadoMensaje = elementos.seleccionUsuario[UsuaroNumero].mensaje.status;
+            console.log(estadoMensaje);
+            if(estadoMensaje == "Vencido"){
+                return flowDynamic(
+                    [
+                        {body: "*Opciones de Pago:* \n\n\n1️⃣ Toma las referencias del PDF anexo 📄 y paga en banco 🏦 o desde tu App de banco 💳. \n\n\n2️⃣ Cargo telefónico a tarjeta 📲. \n *se enlistan  numeros de la aseguradora* \n\n\n3️⃣ Llamar a caja AWY"},
+                        {body: "Llamar a caja AWY"}
+                    ]
+                );
+            }
+            
+        }
+    }
+
 ).addAnswer('¿Quieres regresar al menu de opciones?',
 {
     delay: 5000,

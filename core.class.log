@@ -1,0 +1,128 @@
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: 'Menu' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_035e9898-ab7b-466f-8747-3e8eff6bc470',
+  keyword: 'key_3015778f-49ac-486d-97da-e8eb637234da',
+  answer: '¿Cómo puedo ayudarte? \n\nElige una de las siguientes opciones:',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object]
+    ],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: 'f31edb951ba990b298f6014b807c9565'
+}
+[handleMsg]:  {
+  from: '5219321114495',
+  to: '5218261354156',
+  body: 'Ver Recibos de Pago'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_4638f662-e473-4b3e-aa25-e48e753edb01',
+  keyword: 'key_d3cd1c36-b33e-4f17-a974-dd33a34ae24b',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '5b07b59d5fd1f647f0bfa0d3bd75f933'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_18a81476-ea55-416d-a350-603719f90b26',
+  keyword: 'ans_4638f662-e473-4b3e-aa25-e48e753edb01',
+  answer: '*Estos son tus próximos recibos a pagar 🗒️:*',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'fd4b8f05dbeac795b44282307074ca81'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_bf9bbbaa-5442-4130-aced-da58ce240ae5',
+  keyword: 'ans_18a81476-ea55-416d-a350-603719f90b26',
+  answer: '__capture_only_intended__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '8ea7f479692befce429ead0812ea56e4'
+}
+[handleMsg]:  { from: '5219321114495', to: '5218261354156', body: '1' }
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_f79fdced-d39e-41d8-ad0a-54c55e992401',
+  keyword: 'ans_bf9bbbaa-5442-4130-aced-da58ce240ae5',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'f482b9283a2914e6f15ddcf188c62ce7'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_7820b4f6-cd8d-48b7-a260-3e6d933fbbe7',
+  keyword: 'ans_f79fdced-d39e-41d8-ad0a-54c55e992401',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '7d6d060e76ebc74a284bdf41d45f93e9'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_dcc0c4fe-88d4-4b54-9cdb-4eec95d8e46f',
+  keyword: 'ans_7820b4f6-cd8d-48b7-a260-3e6d933fbbe7',
+  answer: '¿Quieres regresar al menu de opciones?',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 5000,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'c4b96b9b59051ca4018441d2badfd881'
+}
