@@ -1,5 +1,5 @@
 const  newtoken = require( './getToken.js');
-const endpoint = 'https://network.awy.digital/api/public/awy-external/get-info';
+const endpoint = 'http://140.84.189.156:3002/api/public/awy-external/get-info';
 
 async function getRecibos(type, noPolicy) {
     try {

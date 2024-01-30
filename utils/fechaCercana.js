@@ -36,6 +36,9 @@ function getFechaCercana(recibo,soloFechaDeVigencia,descripcion){
         if (estatus == "Activo") {
             fechasDeRecibos.push(vencimiento);
         }
+       /* else{
+            return 0;
+        }*/
     }
 
     // Lista de fechas en formato "YYYY-MM-DD"

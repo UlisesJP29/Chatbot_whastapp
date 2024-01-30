@@ -1,5 +1,5 @@
 const newtoken = require('./getToken.js');
-const endpoint = 'https://network.awy.digital/api/public/awy-external/customer/';
+const endpoint = 'http://140.84.189.156:3002/api/public/awy-external/customer/';
 
 //con el token obtenido, crear un función que obtenga los datos del usuario usando el token para acceder a la api, como paremotros un numero de telefono y un valor type
 // la función hara una solicitud post a la api con los parametros como body y el token como header, y regresara un json con los datos del usuario

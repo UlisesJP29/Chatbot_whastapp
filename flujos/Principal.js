@@ -5,8 +5,7 @@ const { EVENTS } = require('@bot-whatsapp/bot')
 const { getRecibos } = require('../utils/getRecibos.js')
 const {getFechaCercana,ordenarFechas} = require('../utils/fechaCercana.js');
 const {esNumero,esCadenaDeLetrasConEspacios} = require('../utils/esNumerico.js')
-
-
+const {sendEmail}  = require('../utils/Correos/sendEmail.js');
 
 const flowSiniestros = addKeyword(['siniestros', 'siniestro'])
 .addAnswer(['📄 ¿Qué tipo de siniestro quieres levantar?']
@@ -38,11 +37,11 @@ const flowFacturas = addKeyword(['Fac', 'facturas', 'Factura']).addAnswer(
 
 const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAction(
     async (ctx, {state})=>{
-        
+            let status;
             //hacemos la llamada al API para obtener los datos del cliente.
             const telefono = ctx.from.substring(3); 
             console.log("El telefono es: ", telefono);
-            const polizas = await getPolizaPDF(1,telefono);
+            const polizas = await getPolizaPDF(1,'8261236069');
             const listaPoliza = [];
             console.log("a punto de entrar al for",polizas);
             for(let i = 0; i < polizas.payload.length; i++) {
@@ -50,6 +49,12 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAction(
                 console.log("poliza: ", obj.noPolicy);
                 const recibo =  await getRecibos(3,obj.noPolicy);
                 const fechaCerna = getFechaCercana(recibo,true,obj.descripcion);
+                status = fechaCerna;
+                /*if( status === 0){
+                    console.log('si fue un estado diferente');
+                    await state.update({ status: status});
+                    break;
+                }*/
                 if (obj.noPolicy) {
                   const data = {
                     poliza: obj.noPolicy,
@@ -59,42 +64,44 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAction(
                   listaPoliza.push(data);
                 }
             }
-            console.log("lista desordenada: ",listaPoliza);
-            // Función de comparación para ordenar por fecha de vigencia de forma ascendente
-            const compararFechas = (a, b) => {
-                // Convertir las fechas de vigencia a objetos Date
-                const fechaA = new Date(a.vigencia);
-                const fechaB = new Date(b.vigencia);
-            
-                // Comparar las fechas y retornar el resultado
-                return fechaA - fechaB;
-            };
-            // Ordenar la lista de objetos por fecha de vigencia
-            listaPoliza.sort(compararFechas);
-            console.log("lista ordenada: ",listaPoliza);
+            //if (status != 0) {
+                console.log("lista desordenada: ",listaPoliza);
+                // Función de comparación para ordenar por fecha de vigencia de forma ascendente
+                const compararFechas = (a, b) => {
+                    // Convertir las fechas de vigencia a objetos Date
+                    const fechaA = new Date(a.vigencia);
+                    const fechaB = new Date(b.vigencia);
+                
+                    // Comparar las fechas y retornar el resultado
+                    return fechaA - fechaB;
+                };
+                // Ordenar la lista de objetos por fecha de vigencia
+                listaPoliza.sort(compararFechas);
+                console.log("lista ordenada: ",listaPoliza);
 
-            const MensajesDeRecibos = [];
-            const infoGuardada = [];
-            for (let i = 0; i < listaPoliza.length; i++) {
-                const info = listaPoliza[i];
-                console.log(`La póliza que se busca es : ${info}`);
-                const recibo =  await getRecibos(3,info.poliza);
-                const reciboCercano = getFechaCercana(recibo,false,info.descripcion);
-                console.log(reciboCercano);
-                reciboCercano.result.forEach((mensaje, i)=> {
-                    console.log("mensaje", mensaje.body);
-                    console.log("mensaje", mensaje.media);
-                    console.log("mensaje", mensaje.status);
-                    MensajesDeRecibos.push(`*( ${i+1} )* ${mensaje.body}`);
-                    infoGuardada.push({mensaje});
+                const MensajesDeRecibos = [];
+                const infoGuardada = [];
+                for (let i = 0; i < listaPoliza.length; i++) {
+                    const info = listaPoliza[i];
+                    console.log(`La póliza que se busca es : ${info}`);
+                    const recibo =  await getRecibos(3,info.poliza);
+                    const reciboCercano = getFechaCercana(recibo,false,info.descripcion);
+                    console.log(reciboCercano);
+                    reciboCercano.result.forEach((mensaje, i)=> {
+                        console.log("mensaje", mensaje.body);
+                        console.log("mensaje", mensaje.media);
+                        console.log("mensaje", mensaje.status);
+                        MensajesDeRecibos.push(`*( ${i+1} )* ${mensaje.body}`);
+                        infoGuardada.push({mensaje});
 
-                });
-            }
-            
-            console.log("Cargando los mensajes para ser enviados:\n",MensajesDeRecibos);
-            
+                    });
+                }
+                
+                console.log("Cargando los mensajes para ser enviados:\n",MensajesDeRecibos);
+                
 
-            await state.update({ recibos: MensajesDeRecibos, seleccionUsuario: infoGuardada});
+                await state.update({ recibos: MensajesDeRecibos, seleccionUsuario: infoGuardada});
+            //}
 
     }
 ).addAnswer(
@@ -103,23 +110,46 @@ const flowPagar = addKeyword(['pagar', 'pag','Pagar']).addAction(
     async (ctx, {state,flowDynamic})=>{
         try {
             const mensajes = state.getMyState();
-            console.log("dentro de la respuesta:\n",mensajes.recibos);
-
-            return flowDynamic( 
+            console.log("dentro de la respuesta:\n",mensajes.status);
+            if(mensajes.recibos.propiedad === undefined){
+                await flowDynamic( 
                 
-                mensajes.recibos
+                    [
+                        'Lo sentimos, no tienes recibos próximos a vencer 😉',
+                    ]
+                    
+                )
+            }else{
+                console.log("dentro de la respuesta:\n",mensajes.recibos);
+                return flowDynamic( 
                 
-            )
+                    mensajes.recibos
+                    
+                )
+            }
+            
         } catch (error) {
             console.error('Error al obtener Recibos:', error.message);
         }
         
     }
 ).addAction(
+    async(ctx,{state, gotoFlow}) =>{
+        const mensajes = state.getMyState();
+        console.log("dentro de la respuesta:\n",mensajes.recibos);
+        if(mensajes.recibos.propiedad === undefined){
+            return gotoFlow(RegresarAlMenu);
+        }
+        
+
+    }
+).addAction(
     {capture:true},
-    async(ctx,{state,}) =>{
-        const UsuaroNumero = ctx.body -1;
-        await state.update({ seleccion: UsuaroNumero});
+    async(ctx,{state}) =>{
+        
+            const UsuaroNumero = ctx.body -1;
+            await state.update({ seleccion: UsuaroNumero});
+        
 
     }
 ).addAction(
@@ -195,7 +225,7 @@ const flowPolizas = addKeyword(['polizas', 'poliza','Pólizas']).addAction(//mue
         //hacemos la llamada al API para obtener los datos del cliente.
         const telefono = ctx.from.substring(3); 
         console.log("El telefono es: ", telefono);
-        const poliza = await getPolizaPDF(1,telefono);
+        const poliza = await getPolizaPDF(1,'8261236069');
         RamosObtenidos.push('Selecciona el tipo de póliza que quieres ver:\n');
         poliza.payload.forEach((obj,i) => {
             if (obj.ramo && obj.ramo.name) {
@@ -364,6 +394,22 @@ const flowMenuOtros = addKeyword(['otros','Ver otras opciones']).addAnswer(
     [flowSiniestros,flowFacturas]
 )
 
+const RegresarAlMenu = addKeyword('regresar').addAnswer(
+    '¿Quieres regresar al menu de opciones?',
+{
+    delay: 5000,
+    capture:true,
+},(ctx, {endFlow}) => {
+    if (ctx.body == 'Finalizar chat'){
+        return endFlow(
+            {
+                body: '¡Saliste del Chat. 😔 Para volver a iniciar, simplemente escribe *Hola* o *Inicio*. Estamos aquí para ayudarte. 🙌🤖'
+            }
+        )
+    }
+    
+}
+)
 
 const flowMenu = addKeyword(['menu', 'Menu']).addAnswer(
     '¿Cómo puedo ayudarte? \n\nElige una de las siguientes opciones:',
@@ -372,22 +418,154 @@ const flowMenu = addKeyword(['menu', 'Menu']).addAnswer(
     },null,
     [flowPolizas,flowPagar,flowFacturas,flowSiniestros,flowMenuOtros]
 )
-
-
-const flowNoRegistrado = addKeyword(['no registrado'],{ sensitive: true }).addAnswer(
+const flowGastosMedicos = addKeyword(['cotizar','flujoAutos','autos']).addAnswer(
     [
-        'Nos emociona que hayas llegado a nuestro servicio. 😃 \n \nPara comenzar, por favor proporciona tu información básica para poder ayudarte de la mejor manera posible.',
-        '\n¡Gracias por confiar en nosotros! \n \n¡Comencemos! 📋🔒'
-    ],
+        'Te haré una serie de preguntas',
+        'Por favor contestas correctamente',
+        '¿Cual es tu Correo?'
+
+    ],{capture:true},
+    async (ctx,{flowDynamic,gotoFlow})=>{
+        console.log('Dentro del flujo de Autos',ctx.body);
+
+        await flowDynamic(`Ya te registramos..`)
+        await gotoFlow(flowNoRegistrado)
+    }
+)
+//Año, Marca, Modelo ¿Nacional o Regularizado?
+const flowAutos = addKeyword(['cotizar','flujoAutos','autos']).addAnswer(
+    [
+        'Has elegido la opción Autos 🚗',
+        'Contesta el siguiente formulario:'
+    ]
 ).addAnswer(
-    '¿Cuál es tu nombre completo?',
+    [
+        "¿Cuál es tu *nombre completo*?"
+    ],
     {capture:true},
-    async (ctx, {state} ) =>{
+    async (ctx,{state})=>{
         state.update({ NombreCliente: ctx.body });
+        
+    }
+)
+.addAnswer(
+    [
+        "¿Cuál es el año de tu automóvil?"
+    ],
+    {capture:true},
+    async (ctx,{state})=>{
+        state.update({ año: ctx.body });
+        
     }
 ).addAnswer(
     [
-            'Selecciona tu sucursal de preferencia:\n',
+        "¿Cuál es la marca de tu automóvil?"
+    ],
+    {capture:true},
+    async (ctx,{state})=>{
+        state.update({ marca: ctx.body });
+        
+    }
+).addAnswer(
+    [
+        "¿Cuál es el modelo de tu automóvil?"
+    ],
+    {capture:true},
+    async (ctx,{state})=>{
+        state.update({ modelo: ctx.body });
+        
+    }
+).addAnswer(
+    [
+        "¿Es tu automóvil nacional o regularizado?"
+    ],
+    {capture:true},
+    async (ctx,{state})=>{  
+        state.update({ tipo: ctx.body });
+        const auto =  state.getMyState();
+        const telefono = ctx.from;
+        console.log(`Nombre del cliente ${auto.NombreCliente}, Año ${auto.año}, Marca ${auto.marca}, Modelo ${auto.modelo}, Tipo ${auto.tipo}`);
+        console.log('se va a enviar el correo...',auto.NombreCliente);
+        /*await sendEmail(auto, telefono).then(() => {
+            console.log("Correo electrónico enviado exitosamente.");
+        }).catch((err) => {
+            console.error("Hubo un error al enviar el correo electrónico:", err.message);
+        });*/
+    }
+).addAnswer('De parte de AWY, ¡muchas gracias por confiar en nosotros! 😊\n\n¡Esperamos verte pronto!',
+{
+    delay: 5000
+},(ctx, {endFlow}) => {
+        return endFlow(
+            {
+
+                body: '¡Saliste del Chat. 😔 Para volver a iniciar, simplemente escribe *Hola* o *Inicio*. Estamos aquí para ayudarte. 🙌🤖'
+            }
+        )
+    
+    
+}
+)
+
+
+
+const flowNoRegistrado = addKeyword(['no registrado'],{ sensitive: true }).addAction(
+    
+    async (ctx, {flowDynamic} ) =>{
+        return flowDynamic(
+            [
+                `Bienvenido ${ctx.ProfileName}`,
+                'Nos emociona que nos contactes 😃'
+            ]
+        );
+    }    
+    
+        
+).addAnswer(
+    [
+        `¿Cómo podemos ayudarte?\n\n( 1 ) Autos\n( 2 ) Gastos Médicos\n( 3 ) Contactar un Asesor\n`
+    ],
+    {capture:true},
+    async (ctx, {fallBack,gotoFlow} ) =>{
+        const seleccion = ctx.body;
+        console.log('se eligio',seleccion);
+        if (seleccion === '1' || seleccion === 'autos') {
+            return gotoFlow(flowAutos);
+          } else if (seleccion === '2' || seleccion === 'gastos médicos') {
+            return gotoFlow(flowGastosMedicos);
+          } else if (seleccion === '3' || seleccion === 'contactar a un asesor') {
+            return gotoFlow(flowGastosMedicos);
+          } else {
+            // Código para manejar otras opciones
+            console.log("Opción no válida");
+            return fallBack();
+          }
+    }
+)
+
+/*.addAnswer(
+    'Guardamos tu información con éxito. Un asesor se pondrá en contacto contigo.',
+    null,
+    async (ctx, {state,flowDynamic}) => {
+        const chat =  state.getMyState()
+        console.log('se va a enviar el correo...',chat.NombreCliente);
+        await sendEmail(chat.NombreCliente,ctx.body).then(() => {
+            console.log("Correo electrónico enviado exitosamente.");
+        }).catch((err) => {
+            console.error("Hubo un error al enviar el correo electrónico:", err.message);
+        });
+    }
+)*/
+
+
+
+/*.addAction(
+    async (ctx, {state,flowDynamic})=>{
+        const cliente = state.getMyState();
+        return flowDynamic(`Hola,${cliente.NombreCliente} ¿Cuál es tu municipio?\n`)
+    }
+).addAnswer(
+    [
         '✅ *Allende*\n',
         '✅ *Galeana*\n',
         '✅ *General Terán*\n',
@@ -406,15 +584,7 @@ const flowNoRegistrado = addKeyword(['no registrado'],{ sensitive: true }).addAn
     }
 ).addAnswer(
     [
-        'Ahora te podrás comunicar con un ejecutivo de la sucursal seleccionada.\n',
-        'Selecciona algun ejecutivo de la lista:\n',
-        //dame una lista en strings de 10 nombres de ejecutivos de la sucursal seleccionada,como una lista en javascript
-        '✔ Juan\n',
-        '✔ Pedro\n', 
-        '✔ Jorge Luis\n',
-        '✔ Alfredo\n',
-        '✔ Roberto Carlos\n',
-        '✔ Ana Maria\n'
+        'Ahora te podrás comunicar con un ejecutivo de la sucursal seleccionada.\n'
     ],
     {capture:true},
     async (ctx, {flowDynamic,state,fallback} ) =>{
@@ -439,7 +609,7 @@ const flowNoRegistrado = addKeyword(['no registrado'],{ sensitive: true }).addAn
     
     
 }
-)
+)*/
 
 const flowDespedida = addKeyword(['adios', 'Gracias', 'Thx','hasta luego', 'bye','finalizar chat'])
     .addAnswer('🙌 Gracias por utilizar el servicio de *Chatbot de AWY*').addAnswer(
@@ -449,29 +619,25 @@ const flowDespedida = addKeyword(['adios', 'Gracias', 'Thx','hasta luego', 'bye'
 
 const flowInicio = addKeyword(EVENTS.WELCOME).addAction(
     async (ctx, {flowDynamic,endFlow,state,gotoFlow} ) =>{
-        //aqui se hace una petición a la api para saber si el cliente es un usuario registrado en la base de datos de awy
-        const telefono = ctx.from.substring(3); // Obtener caracteres después del segundo (índice 2)
-        console.log("El telefono es: ", telefono);
-        const usuario = await getUserInfo('9321114495');
-        console.log("Se inicia la conversación");
-        try {
+        console.log(ctx);
+            //aqui se hace una petición a la api para saber si el cliente es un usuario registrado en la base de datos de awy
+            /*const telefono = ctx.from.substring(3); // Obtener caracteres después del segundo (índice 2)
+            console.log("El telefono es: ", telefono);
+            const usuario = await getUserInfo('9321114495');
+            console.log("Se inicia la conversación");
             if(usuario.payload == null){
                 state.update({ usuarioExiste: false });
                 return gotoFlow(flowNoRegistrado);
-                
             }
-        } catch (error) {
-            console.error('Error al obtener el usuario:', error.message);
-            console.log("El usuario es un cliente registrado en la base de datos de awy");
-            
-        }
-        console.log("El usuario es un cliente registrado ", usuario.payload.name);
-        await state.update({ usuarioExiste: true });
-        return flowDynamic(
-            {
-                body: `¡Hola *${usuario.payload.name}*! \n\nSoy Tu Asistente Virtual de AWY Agentes de Seguros 😊`
-            }
-        )
+            console.log("El usuario es un cliente registrado ", usuario.payload.name);*/
+            await state.update({ usuarioExiste: true });
+            /*return flowDynamic(
+                {
+                    body: `¡Hola *${usuario.payload.name}*! \n\nSoy Tu Asistente Virtual de AWY Agentes de Seguros 😊`
+                }
+            )*/
+        
+        
     }
 ).addAction(
      (_, { gotoFlow, state}) => {
@@ -479,7 +645,9 @@ const flowInicio = addKeyword(EVENTS.WELCOME).addAction(
         console.log("Va al menu principal");
         const Usuario = state.getMyState()
         if (Usuario.usuarioExiste) {
-            return gotoFlow(flowMenu)    
+            return gotoFlow(flowNoRegistrado);    
+        }else{
+            return gotoFlow(flowMenu); 
         }
     }
 )
@@ -489,6 +657,9 @@ const flowInicio = addKeyword(EVENTS.WELCOME).addAction(
         flowInicio,
         flowMenu,
         flowMenuOtros,
+        flowAutos,
+        flowGastosMedicos,
+        RegresarAlMenu,
         flowDespedida,
         flowNoRegistrado,
         flowPolizas,

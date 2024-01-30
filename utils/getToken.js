@@ -1,6 +1,6 @@
 const username = "awyExternal2022"
 const password = "A!Fi8RGw73ukzeJwu1" 
-const url = "https://network.awy.digital/api/public/bot-awy/auth"
+const url = "http://140.84.189.156:3002/api/public/bot-awy/auth"
 //creando un token para la conexion a la api, que despues usaremos para obtener los datos faltantes
 //conect to an external api with token by fetch and get the data in a json
 
