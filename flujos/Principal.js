@@ -432,6 +432,8 @@ const flowGastosMedicos = addKeyword(['cotizar','flujoAutos','autos']).addAnswer
         await gotoFlow(flowNoRegistrado)
     }
 )
+
+
 //Año, Marca, Modelo ¿Nacional o Regularizado?
 const flowAutos = addKeyword(['cotizar','flujoAutos','autos']).addAnswer(
     [
@@ -447,6 +449,39 @@ const flowAutos = addKeyword(['cotizar','flujoAutos','autos']).addAnswer(
         state.update({ NombreCliente: ctx.body });
         
     }
+).addAnswer(
+    [
+        "¿Cuál es tu *Municipio*?\n\n",
+        '( 1 ) *Allende*\n',
+        '( 2 ) *Galeana*\n',
+        '( 3 ) *General Terán*\n',
+        '( 4 ) *Linares*\n',
+        '( 5 ) *Montemorelos*\n'
+    ],
+    {capture:true},
+    async (ctx,{state,fallBack})=>{
+        const respuesta = ctx.body;
+        // Verificar la respuesta del usuario y asignar el municipio correspondiente
+        let municipioSeleccionado;
+        if (respuesta === '1' || respuesta.toLowerCase() === 'allende') {
+            municipioSeleccionado = 'Allende';
+        } else if (respuesta === '2' || respuesta.toLowerCase() === 'galeana') {
+            municipioSeleccionado = 'Galeana';
+        } else if (respuesta === '3' || respuesta.toLowerCase() === 'general terán') {
+            municipioSeleccionado = 'General Terán';
+        } else if (respuesta === '4' || respuesta.toLowerCase() === 'linares') {
+            municipioSeleccionado = 'Linares';
+        } else if (respuesta === '5' || respuesta.toLowerCase() === 'montemorelos') {
+            municipioSeleccionado = 'Montemorelos';
+        } else {
+            municipioSeleccionado = '*Municipio no válido*';
+            return fallBack();
+        }
+
+        // Guardar el municipio en el estado
+        state.update({ MunicipioCliente: municipioSeleccionado });   
+        
+    }
 )
 .addAnswer(
     [
@@ -454,7 +489,7 @@ const flowAutos = addKeyword(['cotizar','flujoAutos','autos']).addAnswer(
     ],
     {capture:true},
     async (ctx,{state})=>{
-        state.update({ año: ctx.body });
+        state.update({ anio: ctx.body });
         
     }
 ).addAnswer(
@@ -468,7 +503,7 @@ const flowAutos = addKeyword(['cotizar','flujoAutos','autos']).addAnswer(
     }
 ).addAnswer(
     [
-        "¿Cuál es el modelo de tu automóvil?"
+        "¿Cuál es el modelo de tu automóvil?",
     ],
     {capture:true},
     async (ctx,{state})=>{
@@ -480,17 +515,27 @@ const flowAutos = addKeyword(['cotizar','flujoAutos','autos']).addAnswer(
         "¿Es tu automóvil nacional o regularizado?"
     ],
     {capture:true},
-    async (ctx,{state})=>{  
+    async (ctx,{state,flowDynamic})=>{  
         state.update({ tipo: ctx.body });
         const auto =  state.getMyState();
         const telefono = ctx.from;
-        console.log(`Nombre del cliente ${auto.NombreCliente}, Año ${auto.año}, Marca ${auto.marca}, Modelo ${auto.modelo}, Tipo ${auto.tipo}`);
+        console.log(`Nombre del cliente ${auto.NombreCliente}, Año ${auto.anio}, Marca ${auto.marca}, Modelo ${auto.modelo}, Tipo ${auto.tipo}`);
+        const prospectoInfo = {
+            nombre: auto.NombreCliente,
+            telefono: telefono,
+            municipio: auto.MunicipioCliente,
+            anio: auto.anio,
+            marca: auto.marca,
+            modelo: auto.modelo,
+            nacionalRegularizado: auto.tipo
+          };
         console.log('se va a enviar el correo...',auto.NombreCliente);
-        /*await sendEmail(auto, telefono).then(() => {
+        await sendEmail('Autos',prospectoInfo).then(() => {
             console.log("Correo electrónico enviado exitosamente.");
+             flowDynamic(`📬 ¡Hola, *${auto.NombreCliente}*! \n\nHemos recibido tu solicitud de cotización de seguro para auto. \n\n¡Buenas noticias! \n\nTu información ha sido enviada con éxito a nuestro equipo de ejecutivos. Estarán revisando los detalles y te contactarán pronto para brindarte más información. 😊 \n\n¡Gracias por elegirnos! 🚗✨`)
         }).catch((err) => {
             console.error("Hubo un error al enviar el correo electrónico:", err.message);
-        });*/
+        });
     }
 ).addAnswer('De parte de AWY, ¡muchas gracias por confiar en nosotros! 😊\n\n¡Esperamos verte pronto!',
 {
@@ -523,7 +568,7 @@ const flowNoRegistrado = addKeyword(['no registrado'],{ sensitive: true }).addAc
         
 ).addAnswer(
     [
-        `¿Cómo podemos ayudarte?\n\n( 1 ) Autos\n( 2 ) Gastos Médicos\n( 3 ) Contactar un Asesor\n`
+        `¿Cómo podemos ayudarte?\n\n( 1 ) *Autos*\n( 2 ) *Gastos Médicos*\n( 3 ) *Contactar un Asesor*\n`
     ],
     {capture:true},
     async (ctx, {fallBack,gotoFlow} ) =>{
