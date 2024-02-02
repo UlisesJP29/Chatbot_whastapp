@@ -418,19 +418,134 @@ const flowMenu = addKeyword(['menu', 'Menu']).addAnswer(
     },null,
     [flowPolizas,flowPagar,flowFacturas,flowSiniestros,flowMenuOtros]
 )
+
+
 const flowGastosMedicos = addKeyword(['cotizar','flujoAutos','autos']).addAnswer(
     [
-        'Te haré una serie de preguntas',
-        'Por favor contestas correctamente',
-        '¿Cual es tu Correo?'
-
-    ],{capture:true},
-    async (ctx,{flowDynamic,gotoFlow})=>{
-        console.log('Dentro del flujo de Autos',ctx.body);
-
-        await flowDynamic(`Ya te registramos..`)
-        await gotoFlow(flowNoRegistrado)
+        'Has elegido la opción Gastos Médicos🏥',
+        'Contesta el siguiente formulario:'
+    ]
+).addAnswer(
+    [
+        "¿Cuál es tu *nombre completo*?"
+    ],
+    {capture:true},
+    async (ctx,{state,fallBack})=>{
+        const nombreCliente = ctx.body;
+        // Validar que la respuesta sea una cadena de texto
+        const esCadenaDeTexto = /^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ\s]+$/.test(nombreCliente);
+        if (esCadenaDeTexto) {
+            // Si es una cadena de texto válida, actualizar el estado
+            state.update({ NombreCliente: nombreCliente });
+        } else {
+            // Si no es una cadena de texto válida, ejecutar la función fallBack()
+            fallBack();
+        }
     }
+).addAnswer(
+    [
+        "¿Cuál es tu *Municipio*?\n\n",
+        '( 1 ) *Allende*\n',
+        '( 2 ) *Galeana*\n',
+        '( 3 ) *General Terán*\n',
+        '( 4 ) *Linares*\n',
+        '( 5 ) *Montemorelos*\n'
+    ],
+    {capture:true},
+    async (ctx,{state,fallBack})=>{
+        const respuesta = ctx.body;
+        // Verificar la respuesta del usuario y asignar el municipio correspondiente
+        let municipioSeleccionado;
+        if (respuesta === '1' || respuesta.toLowerCase() === 'allende') {
+            municipioSeleccionado = 'Allende';
+        } else if (respuesta === '2' || respuesta.toLowerCase() === 'galeana') {
+            municipioSeleccionado = 'Galeana';
+        } else if (respuesta === '3' || respuesta.toLowerCase() === 'general terán') {
+            municipioSeleccionado = 'General Terán';
+        } else if (respuesta === '4' || respuesta.toLowerCase() === 'linares') {
+            municipioSeleccionado = 'Linares';
+        } else if (respuesta === '5' || respuesta.toLowerCase() === 'montemorelos') {
+            municipioSeleccionado = 'Montemorelos';
+        } else {
+            municipioSeleccionado = '*Municipio no válido*';
+            return fallBack();
+        }
+
+        // Guardar el municipio en el estado
+        state.update({ MunicipioCliente: municipioSeleccionado });   
+        
+    }
+)
+.addAnswer(
+    [
+        "¿Cuál es tu sexo?\n\n( 1 ) *Femenino* \n( 2 ) *Masculino*"
+    ],
+    {capture:true},
+    async (ctx,{state,fallBack})=>{
+        const respuestaSexo = ctx.body; // Puedes reemplazar esto con la respuesta real del usuario
+
+        // Normalizar la respuesta a minúsculas para hacer la comparación sin importar la capitalización
+        const respuestaNormalizada = respuestaSexo.toLowerCase();
+
+        // Validar la respuesta
+        let sexo;
+
+        if (respuestaNormalizada === 'femenino' || respuestaNormalizada === 'f' || respuestaNormalizada === '1') {
+            sexo = 'Femenino';
+            state.update({ sexo: sexo });
+        } else if (respuestaNormalizada === 'masculino' || respuestaNormalizada === 'm' || respuestaNormalizada === '2') {
+            sexo = 'Masculino';
+            state.update({ sexo: sexo });
+        } else {
+            // Respuesta no válida
+            console.log('Respuesta no válida');
+            fallBack();
+        }
+        
+    }
+).addAnswer(
+    [
+        "¿Cuál es tu fecha de nacimiento? \n\nDe preferencia formato *DD-MM-AAAA*"
+    ],
+    {capture:true},
+    async (ctx,{state,flowDynamic})=>{  
+        state.update({ fechaNacimiento: ctx.body });
+
+        const GM =  state.getMyState();
+        const telefonoCompleto = ctx.from; // Ejemplo: "5219321114495"
+
+        // Extraer los números después de los primeros tres dígitos
+        const telefono = telefonoCompleto.slice(3);        
+        console.log(`Nombre del cliente ${GM.NombreCliente}, Municipio ${GM.MunicipioCliente}, Sexo ${GM.sexo}, Fecha de Nacimiento ${GM.fechaNacimiento}`);
+        const prospectoInfo = {
+            nombre: GM.NombreCliente,
+            telefono: telefono,
+            municipio: GM.MunicipioCliente,
+            sexo: GM.sexo,
+            fechaNacimiento: GM.fechaNacimiento,
+          };
+        console.log('se va a enviar el correo...',GM.NombreCliente);
+        await sendEmail('Gastos Médicos',prospectoInfo).then(() => {
+            console.log("Correo electrónico enviado exitosamente.");
+             flowDynamic(`📬 ¡Hola, *${GM.NombreCliente}*! \n\nHemos recibido tu solicitud de cotización de seguro para Gastos Médicos. \n\n¡Buenas noticias! \n\nTu información ha sido enviada con éxito a nuestro equipo de ejecutivos. Estarán revisando los detalles y te contactarán pronto para brindarte más información. 😊 \n\n¡Gracias por elegirnos! 🚗✨`)
+        }).catch((err) => {
+            console.error("Hubo un error al enviar el correo electrónico:", err.message);
+            flowDynamic(`Hubo un error al enviar el correo electrónico: ${err.message}\n\nUna disculpa, intentalo de nuevo más tarde.`)
+        });
+    }
+).addAnswer('De parte de AWY, ¡muchas gracias por confiar en nosotros! 😊\n\n¡Esperamos verte pronto!',
+{
+    delay: 5000
+},(ctx, {endFlow}) => {
+        return endFlow(
+            {
+
+                body: '¡Saliste del Chat. 😔 Para volver a iniciar, simplemente escribe *Hola* o *Inicio*. Estamos aquí para ayudarte. 🙌🤖'
+            }
+        )
+    
+    
+}
 )
 
 
@@ -445,9 +560,17 @@ const flowAutos = addKeyword(['cotizar','flujoAutos','autos']).addAnswer(
         "¿Cuál es tu *nombre completo*?"
     ],
     {capture:true},
-    async (ctx,{state})=>{
-        state.update({ NombreCliente: ctx.body });
-        
+    async (ctx,{state,fallBack})=>{
+        const nombreCliente = ctx.body;
+        // Validar que la respuesta sea una cadena de texto
+        const esCadenaDeTexto = /^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ\s]+$/.test(nombreCliente);
+        if (esCadenaDeTexto) {
+            // Si es una cadena de texto válida, actualizar el estado
+            state.update({ NombreCliente: nombreCliente });
+        } else {
+            // Si no es una cadena de texto válida, ejecutar la función fallBack()
+            fallBack();
+        }
     }
 ).addAnswer(
     [
@@ -488,8 +611,17 @@ const flowAutos = addKeyword(['cotizar','flujoAutos','autos']).addAnswer(
         "¿Cuál es el año de tu automóvil?"
     ],
     {capture:true},
-    async (ctx,{state})=>{
-        state.update({ anio: ctx.body });
+    async (ctx,{state,fallBack})=>{
+        const anioAutomovil = ctx.body;
+        // Validar que la respuesta contenga solo números
+        const contieneSoloNumeros = /^\d+$/.test(anioAutomovil);
+        if (contieneSoloNumeros) {
+            // Si la respuesta contiene solo números, actualizar el estado
+            state.update({ anio: anioAutomovil });
+        } else {
+            // Si la respuesta no contiene solo números, ejecutar la función fallBack()
+            fallBack();
+        }
         
     }
 ).addAnswer(
@@ -515,10 +647,23 @@ const flowAutos = addKeyword(['cotizar','flujoAutos','autos']).addAnswer(
         "¿Es tu automóvil nacional o regularizado?"
     ],
     {capture:true},
-    async (ctx,{state,flowDynamic})=>{  
-        state.update({ tipo: ctx.body });
+    async (ctx,{state,flowDynamic,fallBack})=>{  
+        const tipo = ctx.body;
+        // Validar que la respuesta sea una cadena de texto
+        const esCadenaDeTexto = /^[a-zA-Z\s]+$/.test(tipo);
+        if (esCadenaDeTexto) {
+            // Si es una cadena de texto válida, actualizar el estado
+            state.update({ tipo: tipo });
+        } else {
+            // Si no es una cadena de texto válida, ejecutar la función fallBack()
+            fallBack();
+        }
+
         const auto =  state.getMyState();
-        const telefono = ctx.from;
+        const telefonoCompleto = ctx.from; // Ejemplo: "5219321114495"
+
+        // Extraer los números después de los primeros tres dígitos
+        const telefono = telefonoCompleto.slice(3);        
         console.log(`Nombre del cliente ${auto.NombreCliente}, Año ${auto.anio}, Marca ${auto.marca}, Modelo ${auto.modelo}, Tipo ${auto.tipo}`);
         const prospectoInfo = {
             nombre: auto.NombreCliente,
@@ -535,6 +680,8 @@ const flowAutos = addKeyword(['cotizar','flujoAutos','autos']).addAnswer(
              flowDynamic(`📬 ¡Hola, *${auto.NombreCliente}*! \n\nHemos recibido tu solicitud de cotización de seguro para auto. \n\n¡Buenas noticias! \n\nTu información ha sido enviada con éxito a nuestro equipo de ejecutivos. Estarán revisando los detalles y te contactarán pronto para brindarte más información. 😊 \n\n¡Gracias por elegirnos! 🚗✨`)
         }).catch((err) => {
             console.error("Hubo un error al enviar el correo electrónico:", err.message);
+            flowDynamic(`Hubo un error al enviar el correo electrónico: ${err.message}\n\nUna disculpa, intentalo de nuevo más tarde.`)
+
         });
     }
 ).addAnswer('De parte de AWY, ¡muchas gracias por confiar en nosotros! 😊\n\n¡Esperamos verte pronto!',
@@ -664,7 +811,6 @@ const flowDespedida = addKeyword(['adios', 'Gracias', 'Thx','hasta luego', 'bye'
 
 const flowInicio = addKeyword(EVENTS.WELCOME).addAction(
     async (ctx, {flowDynamic,endFlow,state,gotoFlow} ) =>{
-        console.log(ctx);
             //aqui se hace una petición a la api para saber si el cliente es un usuario registrado en la base de datos de awy
             /*const telefono = ctx.from.substring(3); // Obtener caracteres después del segundo (índice 2)
             console.log("El telefono es: ", telefono);

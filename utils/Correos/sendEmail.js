@@ -37,7 +37,7 @@ async function sendEmail(Plantilla,InfoProspecto ) {
 
 function crearDescripcion(Plantilla,prospectoInfo){
   
-  if (Plantilla = 'Autos') {
+  if (Plantilla == 'Autos') {
     const htmlBody = `<!DOCTYPE html>
     <html lang="es">
     <head>
@@ -114,8 +114,75 @@ function crearDescripcion(Plantilla,prospectoInfo){
     </html>
     `;
     return htmlBody;
-  } if (Plantilla= 'GM') {
-    
+  } if (Plantilla == 'Gastos Médicos') {
+    const htmlBody = `<!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Información de Prospecto</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            h1 {
+                color: #3498db;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            th, td {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Información del Prospecto</h1>
+            <table>
+                <tr>
+                    <th>Nombre del Prospecto</th>
+                    <td>${prospectoInfo.nombre}</td>
+                </tr>
+                <tr>
+                    <th>Número de Teléfono</th>
+                    <td>${prospectoInfo.telefono}</td>
+                </tr>
+                <tr>
+                    <th>Municipio</th>
+                    <td>${prospectoInfo.municipio}</td>
+                </tr>
+                <tr>
+                    <th>Tipo de Cotización</th>
+                    <td>Gastos Médicos</td>
+                </tr>
+                <tr>
+                    <th>Año del Carro</th>
+                    <td>${prospectoInfo.sexo}</td>
+                </tr>
+                <tr>
+                    <th>Marca del Carro</th>
+                    <td>${prospectoInfo.fechaNacimiento}</td>
+                </tr>
+            </table>
+            <p>Esta información ha sido proporcionada por el bot de WhatsApp en respuesta a la solicitud de cotización de un seguro de Gastos Médicos. Por favor, atienda esta petición en un plazo de 24 horas.</p>
+        </div>
+    </body>
+    </html>
+    `;
+    return htmlBody;
   } else {
     
   }
