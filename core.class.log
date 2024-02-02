@@ -1,46 +1,30 @@
 [handleMsg]:  {
-  SmsMessageSid: 'SM60774375c34cc8eaa4c3ac0c632ad389',
+  OriginalRepliedMessageSender: 'whatsapp:+5218261354156',
+  SmsMessageSid: 'SM9f240ffb867d45fafe9f7051b1deac7a',
   NumMedia: '0',
   ProfileName: 'Ulises jp',
-  SmsSid: 'SM60774375c34cc8eaa4c3ac0c632ad389',
+  SmsSid: 'SM9f240ffb867d45fafe9f7051b1deac7a',
   WaId: '5219321114495',
   SmsStatus: 'received',
-  Body: 'hola',
+  Body: 'inicio',
+  ButtonText: 'inicio',
   To: 'whatsapp:+5218261354156',
+  ButtonPayload: 'inicio-Payload',
   MessagingServiceSid: 'MG8401b8d2d0821fe90b0c4e1f3591a94b',
   NumSegments: '1',
   ReferralNumMedia: '0',
-  MessageSid: 'SM60774375c34cc8eaa4c3ac0c632ad389',
+  MessageSid: 'SM9f240ffb867d45fafe9f7051b1deac7a',
   AccountSid: 'AC3c8e9d6f14957a1c07486007dabef22a',
+  OriginalRepliedMessageSid: 'SMe0f5d0b7e981e1e6ae317a1d61249e6d',
   From: 'whatsapp:+5219321114495',
   ApiVersion: '2010-04-01',
   from: '5219321114495',
   to: '5218261354156',
-  body: 'hola'
-}
-[handleMsg]:  {
-  SmsMessageSid: 'SMa6e04d4fc3bbe8bf1a8cf9ff896260d2',
-  NumMedia: '0',
-  ProfileName: 'Ulises jp',
-  SmsSid: 'SMa6e04d4fc3bbe8bf1a8cf9ff896260d2',
-  WaId: '5219321114495',
-  SmsStatus: 'received',
-  Body: 'hola',
-  To: 'whatsapp:+5218261354156',
-  MessagingServiceSid: 'MG8401b8d2d0821fe90b0c4e1f3591a94b',
-  NumSegments: '1',
-  ReferralNumMedia: '0',
-  MessageSid: 'SMa6e04d4fc3bbe8bf1a8cf9ff896260d2',
-  AccountSid: 'AC3c8e9d6f14957a1c07486007dabef22a',
-  From: 'whatsapp:+5219321114495',
-  ApiVersion: '2010-04-01',
-  from: '5219321114495',
-  to: '5218261354156',
-  body: 'hola'
+  body: 'inicio'
 }
 [QUEUE_SE_ENVIO]:  {
-  ref: 'ans_085e7181-b464-4931-b3da-c51da4fc39e2',
-  keyword: 'key_2935958d-c3c8-4ae0-bfa5-7aceb3be7907',
+  ref: 'ans_358f32de-92f2-46cf-8108-145cb03b4955',
+  keyword: 'key_33935de2-29f2-4225-ad49-b3bbec7ae02f',
   answer: '__call_action__',
   options: {
     media: null,
@@ -52,11 +36,11 @@
     keyword: {},
     callback: true
   },
-  refSerialize: '2c0ad9bf55381f14787f550f61f02c12'
+  refSerialize: '78da6841964c051a210feb91d4310454'
 }
 [QUEUE_SE_ENVIO]:  {
-  ref: 'ans_1143c189-21b4-44a0-bacd-adbc1860fe32',
-  keyword: 'ans_085e7181-b464-4931-b3da-c51da4fc39e2',
+  ref: 'ans_2169cf09-f139-4069-a2fd-9007502a75ab',
+  keyword: 'ans_358f32de-92f2-46cf-8108-145cb03b4955',
   answer: '__call_action__',
   options: {
     media: null,
@@ -68,13 +52,13 @@
     keyword: {},
     callback: true
   },
-  refSerialize: '791bef23f58526baf7293da3b32d9bcd'
+  refSerialize: '9891c69d4e6273ba79ae92b0985a0616'
 }
 [handleMsg]:  {
-  SmsMessageSid: 'SM9aa7e1721e75f49bb87114a3388add7d',
+  SmsMessageSid: 'SMaeec324e8ddcd89f44b36244c5cc1b66',
   NumMedia: '0',
   ProfileName: 'Ulises jp',
-  SmsSid: 'SM9aa7e1721e75f49bb87114a3388add7d',
+  SmsSid: 'SMaeec324e8ddcd89f44b36244c5cc1b66',
   WaId: '5219321114495',
   SmsStatus: 'received',
   Body: '2',
@@ -82,7 +66,7 @@
   MessagingServiceSid: 'MG8401b8d2d0821fe90b0c4e1f3591a94b',
   NumSegments: '1',
   ReferralNumMedia: '0',
-  MessageSid: 'SM9aa7e1721e75f49bb87114a3388add7d',
+  MessageSid: 'SMaeec324e8ddcd89f44b36244c5cc1b66',
   AccountSid: 'AC3c8e9d6f14957a1c07486007dabef22a',
   From: 'whatsapp:+5219321114495',
   ApiVersion: '2010-04-01',
@@ -91,28 +75,28 @@
   body: '2'
 }
 [handleMsg]:  {
-  SmsMessageSid: 'SM3a3d5f5f35cf1c3ea532176a3628dbb2',
+  SmsMessageSid: 'SM07e51a842d424a4f71fc4a1f7a44d918',
   NumMedia: '0',
   ProfileName: 'Ulises jp',
-  SmsSid: 'SM3a3d5f5f35cf1c3ea532176a3628dbb2',
+  SmsSid: 'SM07e51a842d424a4f71fc4a1f7a44d918',
   WaId: '5219321114495',
   SmsStatus: 'received',
-  Body: 'David Núñez Valenzuela',
+  Body: 'Marco Antonio Solis',
   To: 'whatsapp:+5218261354156',
   MessagingServiceSid: 'MG8401b8d2d0821fe90b0c4e1f3591a94b',
   NumSegments: '1',
   ReferralNumMedia: '0',
-  MessageSid: 'SM3a3d5f5f35cf1c3ea532176a3628dbb2',
+  MessageSid: 'SM07e51a842d424a4f71fc4a1f7a44d918',
   AccountSid: 'AC3c8e9d6f14957a1c07486007dabef22a',
   From: 'whatsapp:+5219321114495',
   ApiVersion: '2010-04-01',
   from: '5219321114495',
   to: '5218261354156',
-  body: 'David Núñez Valenzuela'
+  body: 'Marco Antonio Solis'
 }
 [QUEUE_SE_ENVIO]:  {
-  ref: 'ans_41870a39-1320-40bf-ba7f-c9e1cf7f9d6c',
-  keyword: 'ans_8c57b4be-d659-4160-83a5-fcc67e914caa',
+  ref: 'ans_2c9db8b4-72ec-4a03-b25e-520997a9a7dc',
+  keyword: 'ans_ce49a246-6f79-4f4f-bfac-2020baf8aa3d',
   answer: '¿Cuál es tu *Municipio*?\n' +
     '\n' +
     '\n' +
@@ -135,31 +119,31 @@
     keyword: {},
     callback: true
   },
-  refSerialize: '490e9f0f3be933c631a3de7a31296a21'
+  refSerialize: 'aa1362889f490a212eab7bcc048ff3b5'
 }
 [handleMsg]:  {
-  SmsMessageSid: 'SM06bb2a03be9c1cc3d4a52cd7a1854c69',
+  SmsMessageSid: 'SM8b2f245badd40390637dced0b9d5804c',
   NumMedia: '0',
   ProfileName: 'Ulises jp',
-  SmsSid: 'SM06bb2a03be9c1cc3d4a52cd7a1854c69',
+  SmsSid: 'SM8b2f245badd40390637dced0b9d5804c',
   WaId: '5219321114495',
   SmsStatus: 'received',
-  Body: '3',
+  Body: '4',
   To: 'whatsapp:+5218261354156',
   MessagingServiceSid: 'MG8401b8d2d0821fe90b0c4e1f3591a94b',
   NumSegments: '1',
   ReferralNumMedia: '0',
-  MessageSid: 'SM06bb2a03be9c1cc3d4a52cd7a1854c69',
+  MessageSid: 'SM8b2f245badd40390637dced0b9d5804c',
   AccountSid: 'AC3c8e9d6f14957a1c07486007dabef22a',
   From: 'whatsapp:+5219321114495',
   ApiVersion: '2010-04-01',
   from: '5219321114495',
   to: '5218261354156',
-  body: '3'
+  body: '4'
 }
 [QUEUE_SE_ENVIO]:  {
-  ref: 'ans_9d5da9d1-63b7-4ca2-8f41-a7a90d6086b9',
-  keyword: 'ans_41870a39-1320-40bf-ba7f-c9e1cf7f9d6c',
+  ref: 'ans_1d939137-858b-437e-8f14-c47ee58d6c5f',
+  keyword: 'ans_2c9db8b4-72ec-4a03-b25e-520997a9a7dc',
   answer: '¿Cuál es tu sexo?\n\n( 1 ) *Femenino* \n( 2 ) *Masculino*',
   options: {
     media: null,
@@ -171,13 +155,13 @@
     keyword: {},
     callback: true
   },
-  refSerialize: '4737c99182e8194477578a0ccc76ac71'
+  refSerialize: '2d6fd02f14b0bde38712b54b6900944c'
 }
 [handleMsg]:  {
-  SmsMessageSid: 'SM975b3e7278e19c78fc56b45f8c882fdf',
+  SmsMessageSid: 'SM749477ebc6495bcad25930071188768c',
   NumMedia: '0',
   ProfileName: 'Ulises jp',
-  SmsSid: 'SM975b3e7278e19c78fc56b45f8c882fdf',
+  SmsSid: 'SM749477ebc6495bcad25930071188768c',
   WaId: '5219321114495',
   SmsStatus: 'received',
   Body: '2',
@@ -185,7 +169,7 @@
   MessagingServiceSid: 'MG8401b8d2d0821fe90b0c4e1f3591a94b',
   NumSegments: '1',
   ReferralNumMedia: '0',
-  MessageSid: 'SM975b3e7278e19c78fc56b45f8c882fdf',
+  MessageSid: 'SM749477ebc6495bcad25930071188768c',
   AccountSid: 'AC3c8e9d6f14957a1c07486007dabef22a',
   From: 'whatsapp:+5219321114495',
   ApiVersion: '2010-04-01',
@@ -194,8 +178,8 @@
   body: '2'
 }
 [QUEUE_SE_ENVIO]:  {
-  ref: 'ans_4deb4b43-d993-4537-944a-0ad5343c4723',
-  keyword: 'ans_9d5da9d1-63b7-4ca2-8f41-a7a90d6086b9',
+  ref: 'ans_55fa3c17-39d6-4f14-b455-5aeccef66028',
+  keyword: 'ans_1d939137-858b-437e-8f14-c47ee58d6c5f',
   answer: '¿Cuál es tu fecha de nacimiento? \n\nDe preferencia formato *DD-MM-AAAA*',
   options: {
     media: null,
@@ -207,31 +191,31 @@
     keyword: {},
     callback: true
   },
-  refSerialize: '53356ce2f7dd5311b1383e305c12ade7'
+  refSerialize: 'a713461eb4cc7f88990836991e314752'
 }
 [handleMsg]:  {
-  SmsMessageSid: 'SMb61ef1a03540e8aac96eec01c7e03fff',
+  SmsMessageSid: 'SM71502c0419e4a7d848b0579cb74845d4',
   NumMedia: '0',
   ProfileName: 'Ulises jp',
-  SmsSid: 'SMb61ef1a03540e8aac96eec01c7e03fff',
+  SmsSid: 'SM71502c0419e4a7d848b0579cb74845d4',
   WaId: '5219321114495',
   SmsStatus: 'received',
-  Body: '09-04-1990',
+  Body: '08-04-2000',
   To: 'whatsapp:+5218261354156',
   MessagingServiceSid: 'MG8401b8d2d0821fe90b0c4e1f3591a94b',
   NumSegments: '1',
   ReferralNumMedia: '0',
-  MessageSid: 'SMb61ef1a03540e8aac96eec01c7e03fff',
+  MessageSid: 'SM71502c0419e4a7d848b0579cb74845d4',
   AccountSid: 'AC3c8e9d6f14957a1c07486007dabef22a',
   From: 'whatsapp:+5219321114495',
   ApiVersion: '2010-04-01',
   from: '5219321114495',
   to: '5218261354156',
-  body: '09-04-1990'
+  body: '08-04-2000'
 }
 [QUEUE_SE_ENVIO]:  {
-  ref: 'ans_32bde03e-5c20-4356-b106-bb68f1e66eaf',
-  keyword: 'ans_4deb4b43-d993-4537-944a-0ad5343c4723',
+  ref: 'ans_52a6eb5b-cf0c-4675-81ad-e81a4bc4b617',
+  keyword: 'ans_55fa3c17-39d6-4f14-b455-5aeccef66028',
   answer: 'De parte de AWY, ¡muchas gracias por confiar en nosotros! 😊\n' +
     '\n' +
     '¡Esperamos verte pronto!',
@@ -245,14 +229,14 @@
     keyword: {},
     callback: true
   },
-  refSerialize: '5236faca4af63bc51cb35d2ea3491564'
+  refSerialize: '47deaa30ca90d019cb69778257d5f2a2'
 }
 [handleMsg]:  {
   OriginalRepliedMessageSender: 'whatsapp:+5218261354156',
-  SmsMessageSid: 'SM9a774d2e43932d7288bc8946f18cadd0',
+  SmsMessageSid: 'SMcff71bc7805949e0f8be5d06bd3d42b3',
   NumMedia: '0',
   ProfileName: 'Ulises jp',
-  SmsSid: 'SM9a774d2e43932d7288bc8946f18cadd0',
+  SmsSid: 'SMcff71bc7805949e0f8be5d06bd3d42b3',
   WaId: '5219321114495',
   SmsStatus: 'received',
   Body: 'inicio',
@@ -262,9 +246,9 @@
   MessagingServiceSid: 'MG8401b8d2d0821fe90b0c4e1f3591a94b',
   NumSegments: '1',
   ReferralNumMedia: '0',
-  MessageSid: 'SM9a774d2e43932d7288bc8946f18cadd0',
+  MessageSid: 'SMcff71bc7805949e0f8be5d06bd3d42b3',
   AccountSid: 'AC3c8e9d6f14957a1c07486007dabef22a',
-  OriginalRepliedMessageSid: 'SM8d74be9a3fb5303ba4ff8811290a337f',
+  OriginalRepliedMessageSid: 'SMf1d1a43e705cf20891a0dd1a244d9b2c',
   From: 'whatsapp:+5219321114495',
   ApiVersion: '2010-04-01',
   from: '5219321114495',
@@ -272,8 +256,8 @@
   body: 'inicio'
 }
 [QUEUE_SE_ENVIO]:  {
-  ref: 'ans_085e7181-b464-4931-b3da-c51da4fc39e2',
-  keyword: 'key_2935958d-c3c8-4ae0-bfa5-7aceb3be7907',
+  ref: 'ans_358f32de-92f2-46cf-8108-145cb03b4955',
+  keyword: 'key_33935de2-29f2-4225-ad49-b3bbec7ae02f',
   answer: '__call_action__',
   options: {
     media: null,
@@ -285,11 +269,11 @@
     keyword: {},
     callback: true
   },
-  refSerialize: '2c0ad9bf55381f14787f550f61f02c12'
+  refSerialize: '78da6841964c051a210feb91d4310454'
 }
 [QUEUE_SE_ENVIO]:  {
-  ref: 'ans_1143c189-21b4-44a0-bacd-adbc1860fe32',
-  keyword: 'ans_085e7181-b464-4931-b3da-c51da4fc39e2',
+  ref: 'ans_2169cf09-f139-4069-a2fd-9007502a75ab',
+  keyword: 'ans_358f32de-92f2-46cf-8108-145cb03b4955',
   answer: '__call_action__',
   options: {
     media: null,
@@ -301,5 +285,254 @@
     keyword: {},
     callback: true
   },
-  refSerialize: '791bef23f58526baf7293da3b32d9bcd'
+  refSerialize: '9891c69d4e6273ba79ae92b0985a0616'
+}
+[handleMsg]:  {
+  SmsMessageSid: 'SM5cc35d54f581417f024be4ff2ee8d569',
+  NumMedia: '0',
+  ProfileName: 'Ulises jp',
+  SmsSid: 'SM5cc35d54f581417f024be4ff2ee8d569',
+  WaId: '5219321114495',
+  SmsStatus: 'received',
+  Body: '1',
+  To: 'whatsapp:+5218261354156',
+  MessagingServiceSid: 'MG8401b8d2d0821fe90b0c4e1f3591a94b',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SM5cc35d54f581417f024be4ff2ee8d569',
+  AccountSid: 'AC3c8e9d6f14957a1c07486007dabef22a',
+  From: 'whatsapp:+5219321114495',
+  ApiVersion: '2010-04-01',
+  from: '5219321114495',
+  to: '5218261354156',
+  body: '1'
+}
+[handleMsg]:  {
+  SmsMessageSid: 'SM631c8967521b7cbfe410df834acb960e',
+  NumMedia: '0',
+  ProfileName: 'Ulises jp',
+  SmsSid: 'SM631c8967521b7cbfe410df834acb960e',
+  WaId: '5219321114495',
+  SmsStatus: 'received',
+  Body: 'Ramon Gonzalez Gutierrez',
+  To: 'whatsapp:+5218261354156',
+  MessagingServiceSid: 'MG8401b8d2d0821fe90b0c4e1f3591a94b',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SM631c8967521b7cbfe410df834acb960e',
+  AccountSid: 'AC3c8e9d6f14957a1c07486007dabef22a',
+  From: 'whatsapp:+5219321114495',
+  ApiVersion: '2010-04-01',
+  from: '5219321114495',
+  to: '5218261354156',
+  body: 'Ramon Gonzalez Gutierrez'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_4c0d368d-86b3-495d-af58-1de68e257d42',
+  keyword: 'ans_11a2ceb8-abb7-4c53-abbb-75fa88494abf',
+  answer: '¿Cuál es tu *Municipio*?\n' +
+    '\n' +
+    '\n' +
+    '( 1 ) *Allende*\n' +
+    '\n' +
+    '( 2 ) *Galeana*\n' +
+    '\n' +
+    '( 3 ) *General Terán*\n' +
+    '\n' +
+    '( 4 ) *Linares*\n' +
+    '\n' +
+    '( 5 ) *Montemorelos*\n',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '5be5d287ad33a2b9961ac3bbfb19a13a'
+}
+[handleMsg]:  {
+  SmsMessageSid: 'SMe7ccd308eeb869d6e9df21188e3281ff',
+  NumMedia: '0',
+  ProfileName: 'Ulises jp',
+  SmsSid: 'SMe7ccd308eeb869d6e9df21188e3281ff',
+  WaId: '5219321114495',
+  SmsStatus: 'received',
+  Body: '3',
+  To: 'whatsapp:+5218261354156',
+  MessagingServiceSid: 'MG8401b8d2d0821fe90b0c4e1f3591a94b',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SMe7ccd308eeb869d6e9df21188e3281ff',
+  AccountSid: 'AC3c8e9d6f14957a1c07486007dabef22a',
+  From: 'whatsapp:+5219321114495',
+  ApiVersion: '2010-04-01',
+  from: '5219321114495',
+  to: '5218261354156',
+  body: '3'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_652fe6b7-2866-4de2-9aa5-51b022c61537',
+  keyword: 'ans_4c0d368d-86b3-495d-af58-1de68e257d42',
+  answer: '¿Cuál es el año de tu automóvil?',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '2dd12d2705e75bbb6d18664bb706ca10'
+}
+[handleMsg]:  {
+  SmsMessageSid: 'SMfe9368b167bc5e3c8e1421dd911ab8e3',
+  NumMedia: '0',
+  ProfileName: 'Ulises jp',
+  SmsSid: 'SMfe9368b167bc5e3c8e1421dd911ab8e3',
+  WaId: '5219321114495',
+  SmsStatus: 'received',
+  Body: '2019',
+  To: 'whatsapp:+5218261354156',
+  MessagingServiceSid: 'MG8401b8d2d0821fe90b0c4e1f3591a94b',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SMfe9368b167bc5e3c8e1421dd911ab8e3',
+  AccountSid: 'AC3c8e9d6f14957a1c07486007dabef22a',
+  From: 'whatsapp:+5219321114495',
+  ApiVersion: '2010-04-01',
+  from: '5219321114495',
+  to: '5218261354156',
+  body: '2019'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_23eff1fa-1040-430a-9823-15f8c7807f27',
+  keyword: 'ans_652fe6b7-2866-4de2-9aa5-51b022c61537',
+  answer: '¿Cuál es la marca de tu automóvil?',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'c79a8eff88ab25d181ed3e798aaeeaef'
+}
+[handleMsg]:  {
+  SmsMessageSid: 'SMc848e75dcad840dddc3a77205a2db82d',
+  NumMedia: '0',
+  ProfileName: 'Ulises jp',
+  SmsSid: 'SMc848e75dcad840dddc3a77205a2db82d',
+  WaId: '5219321114495',
+  SmsStatus: 'received',
+  Body: 'Ford',
+  To: 'whatsapp:+5218261354156',
+  MessagingServiceSid: 'MG8401b8d2d0821fe90b0c4e1f3591a94b',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SMc848e75dcad840dddc3a77205a2db82d',
+  AccountSid: 'AC3c8e9d6f14957a1c07486007dabef22a',
+  From: 'whatsapp:+5219321114495',
+  ApiVersion: '2010-04-01',
+  from: '5219321114495',
+  to: '5218261354156',
+  body: 'Ford'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_69aa2cb5-fbfd-46bf-bcc2-a95a7de9f995',
+  keyword: 'ans_23eff1fa-1040-430a-9823-15f8c7807f27',
+  answer: '¿Cuál es el modelo de tu automóvil?',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '322b239df4acc820002796e52a7bb094'
+}
+[handleMsg]:  {
+  SmsMessageSid: 'SMb0fb8600f18c382d0fc7d5bb0dc35a96',
+  NumMedia: '0',
+  ProfileName: 'Ulises jp',
+  SmsSid: 'SMb0fb8600f18c382d0fc7d5bb0dc35a96',
+  WaId: '5219321114495',
+  SmsStatus: 'received',
+  Body: 'Lobo',
+  To: 'whatsapp:+5218261354156',
+  MessagingServiceSid: 'MG8401b8d2d0821fe90b0c4e1f3591a94b',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SMb0fb8600f18c382d0fc7d5bb0dc35a96',
+  AccountSid: 'AC3c8e9d6f14957a1c07486007dabef22a',
+  From: 'whatsapp:+5219321114495',
+  ApiVersion: '2010-04-01',
+  from: '5219321114495',
+  to: '5218261354156',
+  body: 'Lobo'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_a2550e1a-ad98-4c82-9c62-99dc93737e3a',
+  keyword: 'ans_69aa2cb5-fbfd-46bf-bcc2-a95a7de9f995',
+  answer: '¿Es tu automóvil nacional o regularizado?',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '10863fc46cd7ea68c3dd1f3f9ddd33ec'
+}
+[handleMsg]:  {
+  SmsMessageSid: 'SMa62d6c12eeee62b73536ac5d1c7ae880',
+  NumMedia: '0',
+  ProfileName: 'Ulises jp',
+  SmsSid: 'SMa62d6c12eeee62b73536ac5d1c7ae880',
+  WaId: '5219321114495',
+  SmsStatus: 'received',
+  Body: 'nacional',
+  To: 'whatsapp:+5218261354156',
+  MessagingServiceSid: 'MG8401b8d2d0821fe90b0c4e1f3591a94b',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SMa62d6c12eeee62b73536ac5d1c7ae880',
+  AccountSid: 'AC3c8e9d6f14957a1c07486007dabef22a',
+  From: 'whatsapp:+5219321114495',
+  ApiVersion: '2010-04-01',
+  from: '5219321114495',
+  to: '5218261354156',
+  body: 'nacional'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_14e97fb4-eaa7-4fa7-8bcc-96ab6ddd8843',
+  keyword: 'ans_a2550e1a-ad98-4c82-9c62-99dc93737e3a',
+  answer: 'De parte de AWY, ¡muchas gracias por confiar en nosotros! 😊\n' +
+    '\n' +
+    '¡Esperamos verte pronto!',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 5000,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '525695e7bd76483e8b73c9dd51725de7'
 }

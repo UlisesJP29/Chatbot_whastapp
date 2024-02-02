@@ -420,6 +420,134 @@ const flowMenu = addKeyword(['menu', 'Menu']).addAnswer(
 )
 
 
+const flowContactarAsesor = addKeyword(['cotizar','flujoAutos','autos']).addAnswer(
+    [
+        'Has elegido la opción Contactar un Asesor 👩‍💼',
+        'Contesta el siguiente formulario:'
+    ]
+).addAnswer(
+    [
+        "¿Cuál es tu *nombre completo*?"
+    ],
+    {capture:true},
+    async (ctx,{state,fallBack})=>{
+        const nombreCliente = ctx.body;
+        // Validar que la respuesta sea una cadena de texto
+        const esCadenaDeTexto = /^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ\s]+$/.test(nombreCliente);
+        if (esCadenaDeTexto) {
+            // Si es una cadena de texto válida, actualizar el estado
+            state.update({ NombreCliente: nombreCliente });
+        } else {
+            // Si no es una cadena de texto válida, ejecutar la función fallBack()
+            fallBack();
+        }
+    }
+).addAnswer(
+    [
+        "¿Cuál es tu *Municipio*?\n\n",
+        '( 1 ) *Allende*\n',
+        '( 2 ) *Galeana*\n',
+        '( 3 ) *General Terán*\n',
+        '( 4 ) *Linares*\n',
+        '( 5 ) *Montemorelos*\n'
+    ],
+    {capture:true},
+    async (ctx,{state,fallBack})=>{
+        const respuesta = ctx.body;
+        // Verificar la respuesta del usuario y asignar el municipio correspondiente
+        let municipioSeleccionado;
+        if (respuesta === '1' || respuesta.toLowerCase() === 'allende') {
+            municipioSeleccionado = 'Allende';
+        } else if (respuesta === '2' || respuesta.toLowerCase() === 'galeana') {
+            municipioSeleccionado = 'Galeana';
+        } else if (respuesta === '3' || respuesta.toLowerCase() === 'general terán') {
+            municipioSeleccionado = 'General Terán';
+        } else if (respuesta === '4' || respuesta.toLowerCase() === 'linares') {
+            municipioSeleccionado = 'Linares';
+        } else if (respuesta === '5' || respuesta.toLowerCase() === 'montemorelos') {
+            municipioSeleccionado = 'Montemorelos';
+        } else {
+            municipioSeleccionado = '*Municipio no válido*';
+            return fallBack();
+        }
+
+        // Guardar el municipio en el estado
+        state.update({ MunicipioCliente: municipioSeleccionado });   
+        
+    }
+)
+.addAnswer(
+    [
+        "¿Cuál es tu sexo?\n\n( 1 ) *Femenino* \n( 2 ) *Masculino*"
+    ],
+    {capture:true},
+    async (ctx,{state,fallBack})=>{
+        const respuestaSexo = ctx.body; // Puedes reemplazar esto con la respuesta real del usuario
+
+        // Normalizar la respuesta a minúsculas para hacer la comparación sin importar la capitalización
+        const respuestaNormalizada = respuestaSexo.toLowerCase();
+
+        // Validar la respuesta
+        let sexo;
+
+        if (respuestaNormalizada === 'femenino' || respuestaNormalizada === 'f' || respuestaNormalizada === '1') {
+            sexo = 'Femenino';
+            state.update({ sexo: sexo });
+        } else if (respuestaNormalizada === 'masculino' || respuestaNormalizada === 'm' || respuestaNormalizada === '2') {
+            sexo = 'Masculino';
+            state.update({ sexo: sexo });
+        } else {
+            // Respuesta no válida
+            console.log('Respuesta no válida');
+            fallBack();
+        }
+        
+    }
+).addAnswer(
+    [
+        "¿Cuál es tu fecha de nacimiento? \n\nDe preferencia formato *DD-MM-AAAA*"
+    ],
+    {capture:true},
+    async (ctx,{state,flowDynamic})=>{  
+        state.update({ fechaNacimiento: ctx.body });
+
+        const CA =  state.getMyState();
+        const telefonoCompleto = ctx.from; // Ejemplo: "5219321114495"
+
+        // Extraer los números después de los primeros tres dígitos
+        const telefono = telefonoCompleto.slice(3);        
+        console.log(`Nombre del cliente ${CA.NombreCliente}, Municipio ${CA.MunicipioCliente}, Sexo ${CA.sexo}, Fecha de Nacimiento ${CA.fechaNacimiento}`);
+        const prospectoInfo = {
+            nombre: CA.NombreCliente,
+            telefono: telefono,
+            municipio: CA.MunicipioCliente,
+            sexo: CA.sexo,
+            fechaNacimiento: CA.fechaNacimiento,
+          };
+        console.log('se va a enviar el correo...',CA.NombreCliente);
+        await sendEmail('Contactar un Asesor',prospectoInfo).then(() => {
+            console.log("Correo electrónico enviado exitosamente.");
+             flowDynamic(`📬 ¡Hola, *${CA.NombreCliente}*! \n\nHemos recibido tu solicitud para Contactar un Asesor. \n\n¡Buenas noticias! \n\nTu información ha sido enviada con éxito a nuestro equipo de ejecutivos. Estarán revisando los detalles y te contactarán pronto para brindarte más información. 😊 \n\n¡Gracias por elegirnos! 🚗✨`)
+        }).catch((err) => {
+            console.error("Hubo un error al enviar el correo electrónico:", err.message);
+            flowDynamic(`Hubo un error al enviar el correo electrónico: ${err.message}\n\nUna disculpa, intentalo de nuevo más tarde.`)
+        });
+    }
+).addAnswer('De parte de AWY, ¡muchas gracias por confiar en nosotros! 😊\n\n¡Esperamos verte pronto!',
+{
+    delay: 5000
+},(ctx, {endFlow}) => {
+        return endFlow(
+            {
+
+                body: '¡Saliste del Chat. 😔 Para volver a iniciar, simplemente escribe *Hola* o *Inicio*. Estamos aquí para ayudarte. 🙌🤖'
+            }
+        )
+    
+    
+}
+)
+
 const flowGastosMedicos = addKeyword(['cotizar','flujoAutos','autos']).addAnswer(
     [
         'Has elegido la opción Gastos Médicos🏥',
@@ -726,7 +854,7 @@ const flowNoRegistrado = addKeyword(['no registrado'],{ sensitive: true }).addAc
           } else if (seleccion === '2' || seleccion === 'gastos médicos') {
             return gotoFlow(flowGastosMedicos);
           } else if (seleccion === '3' || seleccion === 'contactar a un asesor') {
-            return gotoFlow(flowGastosMedicos);
+            return gotoFlow(flowContactarAsesor);
           } else {
             // Código para manejar otras opciones
             console.log("Opción no válida");
@@ -735,73 +863,6 @@ const flowNoRegistrado = addKeyword(['no registrado'],{ sensitive: true }).addAc
     }
 )
 
-/*.addAnswer(
-    'Guardamos tu información con éxito. Un asesor se pondrá en contacto contigo.',
-    null,
-    async (ctx, {state,flowDynamic}) => {
-        const chat =  state.getMyState()
-        console.log('se va a enviar el correo...',chat.NombreCliente);
-        await sendEmail(chat.NombreCliente,ctx.body).then(() => {
-            console.log("Correo electrónico enviado exitosamente.");
-        }).catch((err) => {
-            console.error("Hubo un error al enviar el correo electrónico:", err.message);
-        });
-    }
-)*/
-
-
-
-/*.addAction(
-    async (ctx, {state,flowDynamic})=>{
-        const cliente = state.getMyState();
-        return flowDynamic(`Hola,${cliente.NombreCliente} ¿Cuál es tu municipio?\n`)
-    }
-).addAnswer(
-    [
-        '✅ *Allende*\n',
-        '✅ *Galeana*\n',
-        '✅ *General Terán*\n',
-        '✅ *Linares*\n',
-        '✅ *Montemorelos*\n'
-    ],
-    {capture:true},
-    async (ctx, {state,fallBack} ) =>{
-        console.log("sucursal seleccionada:", ctx.body)
-        if (ctx.body == 'Allende' || ctx.body == 'Galeana' || ctx.body == 'General Terán' || ctx.body == 'Linares' || ctx.body == 'Montemorelos'){
-            state.update({ SucursalCliente: ctx.body });
-            console.log("Se actualizo el estado del cliente con la sucursal seleccionada", ctx.body);
-        }else{
-            return fallBack()
-        }
-    }
-).addAnswer(
-    [
-        'Ahora te podrás comunicar con un ejecutivo de la sucursal seleccionada.\n'
-    ],
-    {capture:true},
-    async (ctx, {flowDynamic,state,fallback} ) =>{
-        const cliente = state.getMyState()
-
-        console.log("Ejecutivo seleccionado:", ctx.body);
-        return flowDynamic([
-            {body: `📍 ${cliente.SucursalCliente}, Nuevo León\n *Llamar* 📞 932 111 4495`},
-            {body: `*${cliente.NombreCliente}*, ahora podras comunicarte con tu ejecutivo *${ctx.body}*.\n \nEl esta disponible para ayudarte con cualquier duda que tengas. 😊`}
-        ]);
-    }
-).addAnswer('De parte de AWY, ¡muchas gracias por confiar en nosotros! 😊\n\n¡Esperamos verte pronto!',
-{
-    delay: 5000
-},(ctx, {endFlow}) => {
-        return endFlow(
-            {
-
-                body: '¡Saliste del Chat. 😔 Para volver a iniciar, simplemente escribe *Hola* o *Inicio*. Estamos aquí para ayudarte. 🙌🤖'
-            }
-        )
-    
-    
-}
-)*/
 
 const flowDespedida = addKeyword(['adios', 'Gracias', 'Thx','hasta luego', 'bye','finalizar chat'])
     .addAnswer('🙌 Gracias por utilizar el servicio de *Chatbot de AWY*').addAnswer(
@@ -850,6 +911,7 @@ const flowInicio = addKeyword(EVENTS.WELCOME).addAction(
         flowMenuOtros,
         flowAutos,
         flowGastosMedicos,
+        flowContactarAsesor,
         RegresarAlMenu,
         flowDespedida,
         flowNoRegistrado,

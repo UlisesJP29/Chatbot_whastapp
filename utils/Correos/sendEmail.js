@@ -2,7 +2,7 @@
 require('dotenv').config();
 const nodemailer = require("nodemailer");
 const PASS_GMAIL = process.env.PASS_GMAIL;
-const emailEjecutivo = ['1180762@alumno.um.edu.mx','yesi0348@gmail.com'];
+const emailEjecutivo = ['1180762@alumno.um.edu.mx','yesi0348@gmail.com','jiaupjp@outlook.com'];
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
@@ -19,11 +19,11 @@ async function sendEmail(Plantilla,InfoProspecto ) {
     try {
       const body = crearDescripcion(Plantilla,InfoProspecto);
         // send mail with defined transport object
-        console.log('dentro de la función...');
+        console.log('dentro de la función para enviar correos...');
         const info = await transporter.sendMail({
           from: '"Bot de WhatsApp AWY 👻" <jiaupjp@gmail.com>',
           to: emailEjecutivo,
-          subject: `Nuevo prospecto, ${InfoProspecto.nombre} está esperando cotización #${Plantilla}.`,
+          subject: (Plantilla !== 'Contactar un Asesor')? `Nuevo prospecto, ${InfoProspecto.nombre} está esperando cotización #${Plantilla}.`: `Nuevo prospecto, ${InfoProspecto.nombre} requiere #${Plantilla}.`,
           text: `Hola, @Ejecutivo`,
           html: body,
         });
@@ -169,11 +169,11 @@ function crearDescripcion(Plantilla,prospectoInfo){
                     <td>Gastos Médicos</td>
                 </tr>
                 <tr>
-                    <th>Año del Carro</th>
+                    <th>Sexo</th>
                     <td>${prospectoInfo.sexo}</td>
                 </tr>
                 <tr>
-                    <th>Marca del Carro</th>
+                    <th>Fecha de Nacimiento</th>
                     <td>${prospectoInfo.fechaNacimiento}</td>
                 </tr>
             </table>
@@ -184,10 +184,75 @@ function crearDescripcion(Plantilla,prospectoInfo){
     `;
     return htmlBody;
   } else {
-    
-  }
-
-  return 
+    const htmlBody = `<!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Información de Prospecto</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            h1 {
+                color: #3498db;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            th, td {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Información del Prospecto</h1>
+            <table>
+                <tr>
+                    <th>Nombre del Prospecto</th>
+                    <td>${prospectoInfo.nombre}</td>
+                </tr>
+                <tr>
+                    <th>Número de Teléfono</th>
+                    <td>${prospectoInfo.telefono}</td>
+                </tr>
+                <tr>
+                    <th>Municipio</th>
+                    <td>${prospectoInfo.municipio}</td>
+                </tr>
+                <tr>
+                    <th>Tipo de Solicitud</th>
+                    <td>Contactar un Asesor</td>
+                </tr>
+                <tr>
+                    <th>Sexo</th>
+                    <td>${prospectoInfo.sexo}</td>
+                </tr>
+                <tr>
+                    <th>Fecha de Nacimiento</th>
+                    <td>${prospectoInfo.fechaNacimiento}</td>
+                </tr>
+            </table>
+            <p>Esta información ha sido proporcionada por el bot de WhatsApp en respuesta a la solicitud para Contactar un Asesor. Por favor, atienda esta petición en un plazo de 24 horas.</p>
+        </div>
+    </body>
+    </html>
+    `;
+    return htmlBody;
+  } 
 }
 
 module.exports = {

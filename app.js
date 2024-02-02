@@ -21,8 +21,18 @@ const main = async () => {
         dbUri: MONGO_DB_URI,
         dbName: MONGO_DB_NAME,
     })
-    const adapterFlow = createFlow([flujos.flowInicio,flujos.flowDespedida,flujos.flowMenu,flujos.flowNoRegistrado,flujos.flowAutos,flujos.flowGastosMedicos,
-    ])
+    const adapterFlow = createFlow(
+        [
+            flujos.flowInicio,
+            flujos.flowDespedida,
+            flujos.flowMenu,
+            flujos.flowNoRegistrado,
+            flujos.flowAutos,
+            flujos.flowGastosMedicos,
+            flujos.flowContactarAsesor
+        
+        ]
+    )
     const adapterProvider = createProvider(TwilioProvider, {
         accountSid: TWILIO_ACCOUNT_SID,
         authToken: TWILIO_AUTH_TOKEN,
